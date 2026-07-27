@@ -1,85 +1,92 @@
-import axios from 'axios';
 import useSWR, { mutate } from 'swr';
-import type {
-  PitchSubmission,
-  PitchSubmissionCreate,
-  PitchSubmissionUpdate,
-} from '@/shared/models/pitch-submission';
 
-export const apiClient = axios.create({
-  baseURL: '/api',
-});
-
-const fetcher = <T>(url: string) => apiClient.get<T>(url).then((res) => res.data);
-
-// ─── Submissions ────────────────────────────────────────────────────────────
-
-export interface SubmissionFilters {
-  status?: string;
-  stage?: string;
-  industry?: string;
-  arr?: string;
+export interface PitchSubmission {
+  id: string;
+  founder_name: string;
+  founder_email: string;
+  founder_linkedin: string | null;
+  company_name: string;
+  company_website: string | null;
+  one_liner: string;
+  sector: string;
+  stage: string;
+  round_size: string;
+  amount_committed: string | null;
+  pitch_deck_url: string;
+  problem: string;
+  why_now: string;
+  consent: boolean;
+  status: 'pending' | 'reviewing' | 'passed' | 'meeting_scheduled';
+  notes: string;
+  submitted_at: string;
 }
 
-export function buildSubmissionsKey(filters?: SubmissionFilters): string {
-  if (!filters) return '/submissions';
-  const params = new URLSearchParams();
-  if (filters.status) params.set('status', filters.status);
-  if (filters.stage) params.set('stage', filters.stage);
-  if (filters.industry) params.set('industry', filters.industry);
-  if (filters.arr) params.set('arr', filters.arr);
-  const qs = params.toString();
-  return qs ? `/submissions?${qs}` : '/submissions';
+const fetcher = (url: string) =>
+  fetch(url).then((r) => {
+    if (!r.ok) throw new Error('Failed to fetch');
+    return r.json();
+  });
+
+export function useSubmissions() {
+  return useSWR<PitchSubmission[]>('/api/submissions', fetcher);
 }
 
-export function useSubmissions(filters?: SubmissionFilters) {
-  return useSWR<PitchSubmission[], Error>(buildSubmissionsKey(filters), fetcher);
+export function useSubmission(id: string) {
+  return useSWR<PitchSubmission>(id ? `/api/submissions/${id}` : null, fetcher);
 }
 
-export async function createSubmission(data: PitchSubmissionCreate): Promise<PitchSubmission> {
-  const res = await apiClient.post<PitchSubmission>('/submissions', data);
-  // Revalidate all submission caches (any filter combination)
-  await mutate((key) => typeof key === 'string' && key.startsWith('/submissions'));
-  return res.data;
+export async function createSubmission(
+  data: Omit<PitchSubmission, 'id' | 'status' | 'notes' | 'submitted_at'>,
+) {
+  const res = await fetch('/api/submissions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error((err as { error?: string }).error ?? 'Failed to submit');
+  }
+  return res.json() as Promise<{ id: string; company_name: string; founder_email: string }>;
 }
 
 export async function updateSubmissionStatus(
   id: string,
-  update: PitchSubmissionUpdate,
-): Promise<PitchSubmission> {
-  let result: PitchSubmission | undefined;
-
-  await mutate(
-    (key) => typeof key === 'string' && key.startsWith('/submissions'),
-    async (current: PitchSubmission[] | undefined) => {
-      const res = await apiClient.patch<PitchSubmission>(`/submissions/${id}`, update);
-      result = res.data;
-      return (current ?? []).map((s) => (s.id === id ? res.data : s));
+  status: PitchSubmission['status'],
+) {
+  await mutate<PitchSubmission[], PitchSubmission>(
+    '/api/submissions',
+    async () => {
+      const res = await fetch(`/api/submissions/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      });
+      if (!res.ok) throw new Error('Failed to update status');
+      return res.json() as Promise<PitchSubmission>;
     },
     {
-      optimisticData: (current: PitchSubmission[] | undefined) =>
-        (current ?? []).map((s) => (s.id === id ? { ...s, ...update } : s)),
+      optimisticData: (current) =>
+        (current ?? []).map((s) => (s.id === id ? { ...s, status } : s)),
+      populateCache: (updated, current) =>
+        (current ?? []).map((s) => (s.id === updated.id ? updated : s)),
       rollbackOnError: true,
       revalidate: false,
     },
   );
-
-  if (!result) throw new Error('Update failed');
-  return result;
 }
 
-export async function deleteSubmission(id: string): Promise<void> {
-  await mutate(
-    (key) => typeof key === 'string' && key.startsWith('/submissions'),
-    async (current: PitchSubmission[] | undefined) => {
-      await apiClient.delete(`/submissions/${id}`);
-      return (current ?? []).filter((s) => s.id !== id);
-    },
-    {
-      optimisticData: (current: PitchSubmission[] | undefined) =>
-        (current ?? []).filter((s) => s.id !== id),
-      rollbackOnError: true,
-      revalidate: false,
-    },
+export async function updateSubmissionNotes(id: string, notes: string) {
+  const res = await fetch(`/api/submissions/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ notes }),
+  });
+  if (!res.ok) throw new Error('Failed to update notes');
+  const updated = (await res.json()) as PitchSubmission;
+  await mutate<PitchSubmission[]>(
+    '/api/submissions',
+    (current) => (current ?? []).map((s) => (s.id === updated.id ? updated : s)),
+    false,
   );
 }

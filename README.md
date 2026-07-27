@@ -1,60 +1,63 @@
-# Healthworx Capital — Pitch Portal
+# Healthcare VC Sourcing Hub
 
 ## High-level Strategy and Goal
 
-A full-stack internal tool for Nana Dwumfuoh's Healthworx Capital. It has two surfaces:
+A premium personal brand site for a healthcare/health-tech VC deal sourcing hub. The app serves two audiences:
 
-1. **Founder-facing website** (`/`) — a full-page marketing + submission site with a dark hero, animated particle canvas, thesis section, and a multi-section pitch form. No authentication required to submit.
-2. **VC Dashboard** (`/dashboard`) — an internal review tool where the VC team can browse, filter, update status, add notes, and delete submissions.
+1. **Founders** — a polished public landing page where they can learn about the investor's focus and submit their pitch deck via a structured form.
+2. **The Investor (internal)** — a private dashboard to review, filter, and manage all incoming pitch submissions with status tracking and notes.
+
+The design is intentionally premium and minimal: deep forest green accent on warm off-white, confident typography, and subtle motion — signaling health, growth, and seriousness.
 
 ---
 
 ## Changes Implemented
 
-### Models
-- `src/shared/models/pitch-submission.ts` — TypeScript interfaces and all dropdown option constants.
-
-### API Routes
-- `src/app/api/submissions/route.ts` — `GET` (with optional filters) and `POST` (create new submission).
-- `src/app/api/submissions/[id]/route.ts` — `PATCH` (update status/notes) and `DELETE`.
-
-### Client Library
-- `src/client-lib/api-client.ts` — SWR hook `useSubmissions(filters?)`, `createSubmission`, `updateSubmissionStatus` (optimistic), `deleteSubmission` (optimistic).
-- `src/components/SWRProvider.tsx` — Global SWR config.
-
-### Pages & Layout
-- `src/app/layout.tsx` — Stripped to bare minimum (ThemeProvider + SWRProvider + Toaster). No sidebar/topbar chrome at root level.
-- `src/app/page.tsx` — Thin orchestrator that assembles the pitch website sections.
-- `src/app/dashboard/layout.tsx` — Dashboard-specific layout that adds the Topbar and `pt-12` padding.
-- `src/app/dashboard/page.tsx` — VC dashboard with stat cards, filters, table, and detail Sheet.
-- `src/app/dashboard/loading.tsx` — Skeleton loading state.
-
-### Pitch Website Components (`src/components/pitch/`)
-- `KineticWord.tsx` — Animated cycling word ("Healthcare." / "Founders." / "Solutions.") with fade-up transition.
-- `PitchNavbar.tsx` — Fixed transparent navbar that transitions to white with shadow when scrolled off the dark hero (IntersectionObserver on `#hero`).
-- `HeroSection.tsx` — Full-viewport dark espresso hero with particle canvas, radial spotlight, eyebrow badge, giant headline, and dual CTA buttons.
-- `AboutSection.tsx` — White section with "Our Focus" eyebrow, headline, body copy, and 3 principle cards with hover animations.
-- `PitchFormSection.tsx` — Full 5-section pitch submission form with validation, success state, and walnut-themed styling.
-- `PitchFooter.tsx` — Dark espresso footer matching the hero.
-
-### Canvas Animation
-- `src/components/WarmParticleCanvas.tsx` — Canvas-based rising particle system with warm amber/gold particles along grid columns. Uses `requestAnimationFrame`, `ResizeObserver`, and radial gradient glow per particle.
-
-### Styling
-- `globals.css` — Updated CSS variables: pure white `--background`, sienna `--primary` (`20 60% 35%`). Added `.hero-gradient`, `.grid-pattern-dark`, `.grid-pattern-light` utility classes.
-
-### Topbar
-- `src/components/Topbar.tsx` — Restyled: white background, walnut wordmark with amber pulse dot, user avatar dropdown (ThemeToggle removed for cleaner look).
+### Full Rebuild (July 2026)
+- **Deleted** all old pitch portal components (`HeroSection`, `PitchFooter`, `PitchFormSection`, `PitchNavbar`, `WarmParticleCanvas`, `ElementSelector`) and old page/API files.
+- **Database**: Dropped and recreated `pitch_submissions` table with full schema including founder info, company info, deal details, pitch content, consent, status, and notes. Added indexes on status, sector, stage, and submitted_at.
+- **Landing page** (`/`): Full single-page scrolling site with sticky navbar (transparent → white on scroll), dark hero section with dot-grid overlay, about/focus section, and a comprehensive pitch submission form.
+- **Pitch form**: 5-section form (About You, Your Company, The Deal, Your Pitch, Consent) with inline validation, character counters, and a success state replacing the form on submission.
+- **Dashboard** (`/dashboard`): Private VC deal flow dashboard with stats cards, multi-filter bar (search + sector + stage + status), sortable table, and a right-side detail Sheet with inline status updates and auto-saving notes.
+- **API routes**: `POST /api/submissions` (create), `GET /api/submissions` (list), `GET /api/submissions/[id]` (detail), `PATCH /api/submissions/[id]` (update status/notes).
+- **Design system**: Updated `globals.css` CSS variables to deep forest green primary (`#14532D`), warm off-white background (`#FAFAF9`), near-black foreground (`#111827`).
+- **Topbar/Sidebar**: Simplified to return null — each page manages its own header.
 
 ---
 
 ## Architecture and Technical Decisions
 
-- **Layout split**: Root layout has zero chrome. The dashboard route gets its own `layout.tsx` that injects the Topbar. The pitch page manages its own fixed navbar inline. This avoids the sidebar/topbar appearing on the public-facing pitch website.
-- **Component decomposition**: The pitch page is split into 5 focused components under `src/components/pitch/` to stay within file size limits and keep each concern isolated.
-- **Canvas animation**: Implemented with raw Canvas 2D API (no library) for minimal bundle impact. Particles rise along grid column center-lines, fade in/out based on vertical progress, with a radial gradient glow per particle.
-- **Navbar state**: Uses `IntersectionObserver` on `#hero` (threshold 0.15) to toggle between transparent/dark-text and white/shadow modes. Avoids scroll event polling.
-- **Color palette**: All warm walnut/espresso colors are applied via inline `style` props (not Tailwind classes) to ensure exact hex values are used without Tailwind purging or approximating them.
-- **Database**: Uses the existing `pitch_submissions` Postgres table. All queries use parameterized statements.
-- **SWR key strategy**: All submission list keys start with `/submissions`, enabling wildcard cache invalidation across all filter combinations.
-- **Optimistic updates**: Status changes and deletes update the UI instantly via SWR's `optimisticData` callback, with `rollbackOnError: true`.
+### Component Structure
+```
+src/
+  app/
+    page.tsx                    # Landing page (assembles landing components)
+    dashboard/
+      page.tsx                  # VC dashboard (client component)
+      layout.tsx                # Minimal wrapper
+      loading.tsx               # Skeleton matching dashboard layout
+    api/submissions/
+      route.ts                  # GET (list) + POST (create)
+      [id]/route.ts             # GET (detail) + PATCH (update)
+  components/
+    landing/
+      LandingNavbar.tsx         # Sticky navbar with scroll detection
+      HeroSection.tsx           # Dark hero with dot grid
+      AboutSection.tsx          # About + focus areas + stats strip
+      SubmitSection.tsx         # Section wrapper for the form
+      PitchForm.tsx             # Full multi-section form with validation
+      LandingFooter.tsx         # Dark footer
+    dashboard/
+      SubmissionSheet.tsx       # Right-side detail sheet with notes
+  client-lib/
+    api-client.ts               # SWR hooks + optimistic mutation helpers
+```
+
+### Key Decisions
+- **Landing page is a client component** — needs scroll listener for navbar transparency effect.
+- **Form uses `useState`** (not react-hook-form) — simpler for this single-page use case with custom validation logic.
+- **Optimistic updates** on status changes — the table updates instantly, server reconciles in background.
+- **Notes auto-save on blur** — avoids a save button, feels natural for a notes field.
+- **No sidebar** — the dashboard is a single focused view; sidebar would add unnecessary chrome.
+- **SWR `dedupingInterval: 30000`** — submissions list is stable; no need for aggressive revalidation.
+- **Indexes** on `status`, `sector`, `stage`, `submitted_at` — the dashboard filters by all four.

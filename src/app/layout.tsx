@@ -1,17 +1,10 @@
 import "globals.css";
 
 import { type Metadata } from "next";
-import { Geist_Mono, Inter } from "next/font/google";
-import { lazy } from "react";
+import { Inter, Geist_Mono } from "next/font/google";
 import { SWRProvider } from "@/components/SWRProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
-
-const ElementSelector = lazy(() =>
-  process.env.NODE_ENV === "development"
-    ? import("@/components/ElementSelector")
-    : Promise.resolve({ default: () => null }),
-);
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,15 +16,16 @@ const geistMono = Geist_Mono({
   variable: "--font-mono",
 });
 
-const appName = process.env.NEXT_PUBLIC_APP_NAME || "Pitch Portal";
-
 export const metadata: Metadata = {
-  title: appName,
-  description: "Submit your pitch deck.",
+  title: "Sourcing | Healthcare Ventures",
+  description:
+    "Submit your pitch to be considered for healthcare and health-tech investment.",
   icons: "https://vybe.build/vybe-icon.svg",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
       lang="en"
@@ -39,12 +33,16 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       className={`${inter.variable} ${geistMono.variable} font-sans antialiased`}
     >
       <body className="min-h-screen">
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem={false}
+          disableTransitionOnChange
+        >
           <SWRProvider>
             {children}
           </SWRProvider>
           <Toaster richColors />
-          <ElementSelector />
         </ThemeProvider>
       </body>
     </html>

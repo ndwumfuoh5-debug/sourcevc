@@ -1,21 +1,19 @@
 "use client";
 
-import { HeroSection } from "@/components/pitch/HeroSection";
-import { PitchFooter } from "@/components/pitch/PitchFooter";
-import { PitchFormSection } from "@/components/pitch/PitchFormSection";
-import { PitchNavbar } from "@/components/pitch/PitchNavbar";
+import { LandingNavbar } from "@/components/landing/LandingNavbar";
+import { HeroSection } from "@/components/landing/HeroSection";
+import { AboutSection } from "@/components/landing/AboutSection";
+import { SubmitSection } from "@/components/landing/SubmitSection";
+import { LandingFooter } from "@/components/landing/LandingFooter";
 
-function scrollTo(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-}
-
-export default function SubmitPitchPage() {
+export default function HomePage() {
   return (
-    <div className="min-h-screen" style={{ background: "#FDFAF7" }}>
-      <PitchNavbar onApplyClick={() => scrollTo("apply")} />
-      <HeroSection onApplyClick={() => scrollTo("apply")} />
-      <PitchFormSection />
-      <PitchFooter />
-    </div>
+    <main>
+      <LandingNavbar />
+      <HeroSection />
+      <AboutSection />
+      <SubmitSection />
+      <LandingFooter />
+    </main>
   );
 }
