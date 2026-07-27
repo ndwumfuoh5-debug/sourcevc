@@ -1,6 +1,7 @@
 "use client";
 
-import { Stethoscope, Brain, Building2 } from "lucide-react";
+import { useState } from "react";
+import { type LucideIcon, Stethoscope, Brain, Building2 } from "lucide-react";
 
 const FOCUS_AREAS = [
   {
@@ -27,14 +28,75 @@ const STATS = [
   { label: "Response", value: "2 weeks" },
 ];
 
+function FocusCard({
+  title,
+  desc,
+  Icon,
+}: {
+  title: string;
+  desc: string;
+  Icon: LucideIcon;
+}) {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <div
+      key={title}
+      className="relative rounded-2xl p-7 overflow-hidden transition-all duration-300"
+      style={{
+        background: "rgba(255,255,255,0.3)",
+        backdropFilter: "blur(24px) saturate(150%)",
+        WebkitBackdropFilter: "blur(24px) saturate(150%)",
+        border: "1px solid rgba(255,255,255,0.55)",
+        boxShadow: hovered
+          ? "0 8px 40px rgba(100,120,200,0.2), inset 0 1px 0 rgba(255,255,255,0.9)"
+          : "0 4px 24px rgba(100,120,200,0.1), inset 0 1px 0 rgba(255,255,255,0.7)",
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      {/* Ghost icon top-right */}
+      <div
+        className="absolute top-4 right-4 pointer-events-none"
+        aria-hidden="true"
+        style={{ color: "rgba(100,120,200,0.15)" }}
+      >
+        <Icon size={56} strokeWidth={1} />
+      </div>
+
+      <h3 className="font-semibold text-[#1a1f2e] text-base mb-2 relative z-10">
+        {title}
+      </h3>
+      <p className="text-slate-500 text-sm leading-relaxed relative z-10">
+        {desc}
+      </p>
+    </div>
+  );
+}
+
 export function AboutSection() {
   return (
-    <section id="about" className="bg-white py-28 px-6 md:px-10">
+    <section
+      id="about"
+      className="py-28 px-6 md:px-10"
+      style={{
+        background:
+          "linear-gradient(180deg, #dce8f5 0%, #e8d5f0 50%, #d5e8f5 100%)",
+      }}
+    >
       <div className="max-w-7xl mx-auto">
 
         {/* Section header */}
         <div className="mb-16">
-          <div className="inline-flex items-center bg-[#f0f5fc] text-slate-500 text-xs px-4 py-1.5 rounded-full border border-slate-100 mb-5">
+          <div
+            className="inline-flex items-center text-slate-500 text-xs px-4 py-1.5 rounded-full border mb-5"
+            style={{
+              background: "rgba(255,255,255,0.4)",
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
+              borderColor: "rgba(255,255,255,0.6)",
+            }}
+          >
             About
           </div>
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
@@ -51,23 +113,8 @@ export function AboutSection() {
 
         {/* Focus area cards */}
         <div id="focus" className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
-          {FOCUS_AREAS.map(({ title, desc, Icon }) => (
-            <div
-              key={title}
-              className="relative bg-[#f0f5fc] rounded-2xl p-7 border border-white/80 hover:shadow-md transition-shadow overflow-hidden"
-            >
-              {/* Ghost icon top-right */}
-              <div className="absolute top-4 right-4 text-slate-200 pointer-events-none" aria-hidden="true">
-                <Icon size={56} strokeWidth={1} />
-              </div>
-
-              <h3 className="font-semibold text-[#1a1f2e] text-base mb-2 relative z-10">
-                {title}
-              </h3>
-              <p className="text-slate-500 text-sm leading-relaxed relative z-10">
-                {desc}
-              </p>
-            </div>
+          {FOCUS_AREAS.map((area) => (
+            <FocusCard key={area.title} {...area} />
           ))}
         </div>
 
@@ -76,7 +123,14 @@ export function AboutSection() {
           {STATS.map((stat) => (
             <div
               key={stat.label}
-              className="bg-[#f5f8fc] rounded-2xl p-6 text-center border border-slate-100"
+              className="rounded-2xl p-6 text-center"
+              style={{
+                background: "rgba(255,255,255,0.25)",
+                backdropFilter: "blur(20px)",
+                WebkitBackdropFilter: "blur(20px)",
+                border: "1px solid rgba(255,255,255,0.5)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.8)",
+              }}
             >
               <p className="text-2xl font-bold text-[#1a1f2e] mb-1">
                 {stat.value}

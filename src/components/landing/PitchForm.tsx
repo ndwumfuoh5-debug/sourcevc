@@ -86,8 +86,8 @@ function Input({ error, ...props }: React.InputHTMLAttributes<HTMLInputElement> 
     <div>
       <input
         {...props}
-        className={`w-full px-4 py-3 rounded-xl border text-sm text-slate-800 placeholder-slate-300 bg-white/80 focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-100 transition-colors ${
-          error ? "border-red-400" : "border-slate-200"
+        className={`w-full px-4 py-3 rounded-xl border text-sm text-slate-800 placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-white/60 transition-colors bg-white/50 backdrop-blur-sm focus:bg-white/70 ${
+          error ? "border-red-400" : "border-white/60"
         }`}
       />
       {error && <p className="mt-1.5 text-xs text-red-500">{error}</p>}
@@ -100,8 +100,8 @@ function SelectField({ error, children, ...props }: React.SelectHTMLAttributes<H
     <div>
       <select
         {...props}
-        className={`w-full px-4 py-3 rounded-xl border text-sm text-slate-800 bg-white/80 focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-100 transition-colors appearance-none cursor-pointer ${
-          error ? "border-red-400" : "border-slate-200"
+        className={`w-full px-4 py-3 rounded-xl border text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-white/60 transition-colors appearance-none cursor-pointer bg-white/50 backdrop-blur-sm focus:bg-white/70 ${
+          error ? "border-red-400" : "border-white/60"
         }`}
       >
         {children}
@@ -119,8 +119,8 @@ function Textarea({ error, maxLength, value, ...props }: React.TextareaHTMLAttri
         {...props}
         value={value}
         maxLength={maxLength}
-        className={`w-full px-4 py-3 rounded-xl border text-sm text-slate-800 placeholder-slate-300 bg-white/80 focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-100 transition-colors resize-none ${
-          error ? "border-red-400" : "border-slate-200"
+        className={`w-full px-4 py-3 rounded-xl border text-sm text-slate-800 placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-white/60 transition-colors resize-none bg-white/50 backdrop-blur-sm focus:bg-white/70 ${
+          error ? "border-red-400" : "border-white/60"
         }`}
       />
       <div className="flex justify-between mt-1">
@@ -137,10 +137,10 @@ function Textarea({ error, maxLength, value, ...props }: React.TextareaHTMLAttri
 
 function SectionDivider({ number, label }: { number: string; label: string }) {
   return (
-    <div className="flex items-center gap-4 py-4 border-t border-slate-100">
+    <div className="flex items-center gap-4 py-4 border-t border-white/40">
       <span className="text-[10px] tracking-widest text-slate-400 font-medium">{number}</span>
       <span className="text-[11px] tracking-[0.2em] uppercase font-medium text-slate-400">{label}</span>
-      <div className="flex-1 h-px bg-slate-100" />
+      <div className="flex-1 h-px bg-white/40" />
     </div>
   );
 }
@@ -367,7 +367,12 @@ export function PitchForm() {
       <button
         type="submit"
         disabled={submitting || !form.consent}
-        className="bg-[#1a1f2e] hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-semibold tracking-widest uppercase rounded-full w-full py-4 transition-colors flex items-center justify-center gap-2"
+        className="disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-semibold tracking-widest uppercase rounded-full w-full py-4 transition-opacity hover:opacity-90 flex items-center justify-center gap-2"
+        style={{
+          background: "rgba(26,31,46,0.85)",
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
+        }}
       >
         {submitting ? (
           <><Loader2 size={14} className="animate-spin" /> Submitting…</>

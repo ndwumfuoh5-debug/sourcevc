@@ -4,7 +4,15 @@ import { Linkedin, Mail } from "lucide-react";
 
 export function LandingFooter() {
   return (
-    <footer className="bg-[#1a1f2e] py-14 px-6 md:px-10">
+    <footer
+      className="py-14 px-6 md:px-10"
+      style={{
+        background: "rgba(20,25,40,0.92)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+        borderTop: "1px solid rgba(255,255,255,0.1)",
+      }}
+    >
       <div className="max-w-7xl mx-auto">
 
         {/* Top row */}
