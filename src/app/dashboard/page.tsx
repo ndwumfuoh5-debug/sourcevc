@@ -299,11 +299,11 @@ function SubmissionSheet({
 
 // ─── Stat Card ───────────────────────────────────────────────────────────────
 
-function StatCard({ label, value }: { label: string; value: number }) {
+function StatCard({ label, value, accent }: { label: string; value: number; accent?: boolean }) {
   return (
-    <Card>
+    <Card className={`border-border/70 shadow-sm ${accent ? 'bg-primary text-primary-foreground' : ''}`}>
       <CardHeader className="pb-1 pt-4 px-4">
-        <CardTitle className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+        <CardTitle className={`text-xs font-semibold uppercase tracking-wider ${accent ? 'opacity-70' : 'text-muted-foreground'}`}>
           {label}
         </CardTitle>
       </CardHeader>
@@ -389,13 +389,16 @@ export default function DashboardPage() {
     <div className="space-y-6 py-2">
       {/* Page title */}
       <div>
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-1">
+          Healthworx Capital · Nana Dwumfuoh
+        </p>
         <h1 className="text-2xl font-semibold tracking-tight">Pitch Submissions</h1>
-        <p className="text-sm text-muted-foreground mt-1">Review and manage incoming pitches.</p>
+        <p className="text-sm text-muted-foreground mt-1">Review and manage incoming pitches from healthcare founders.</p>
       </div>
 
       {/* Stat cards */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-        <StatCard label="Total" value={stats.total} />
+        <StatCard label="Total" value={stats.total} accent />
         <StatCard label="Pending" value={stats.pending} />
         <StatCard label="Interested" value={stats.interested} />
         <StatCard label="Follow Up" value={stats.follow_up} />
