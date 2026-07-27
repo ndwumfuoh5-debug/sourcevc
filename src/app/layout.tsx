@@ -4,6 +4,7 @@ import { type Metadata } from "next";
 import { Geist_Mono, Inter } from "next/font/google";
 import { lazy } from "react";
 import { Sidebar } from "@/components/Sidebar";
+import { SWRProvider } from "@/components/SWRProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
@@ -42,16 +43,18 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     >
       <body className="min-h-screen">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          {NAV_LINKS.length >= 2 ? (
-            <SidebarProvider>
-              <Sidebar />
-              <SidebarInset>
-                <main className="flex-1 p-4">{children}</main>
-              </SidebarInset>
-            </SidebarProvider>
-          ) : (
-            <main className="flex-1 p-4">{children}</main>
-          )}
+          <SWRProvider>
+            {NAV_LINKS.length >= 2 ? (
+              <SidebarProvider>
+                <Sidebar />
+                <SidebarInset>
+                  <main className="flex-1 p-4">{children}</main>
+                </SidebarInset>
+              </SidebarProvider>
+            ) : (
+              <main className="flex-1 p-4">{children}</main>
+            )}
+          </SWRProvider>
           <Toaster richColors />
           <ElementSelector />
         </ThemeProvider>

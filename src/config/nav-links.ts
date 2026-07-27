@@ -1,4 +1,4 @@
-import { Home, type LucideIcon } from "lucide-react";
+import { Home, LayoutDashboard, type LucideIcon } from "lucide-react";
 
 export type NavLink = {
   label: string;
@@ -6,4 +6,7 @@ export type NavLink = {
   icon: LucideIcon;
 };
 
-export const NAV_LINKS: NavLink[] = [{ label: "Home", href: "/", icon: Home }];
+export const NAV_LINKS: NavLink[] = [
+  { label: "Home", href: "/", icon: Home },
+  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+];
