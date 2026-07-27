@@ -1,10 +1,10 @@
-# Pitch Deck Submission Portal
+# Healthworx Capital — Pitch Portal
 
 ## High-level Strategy and Goal
 
-A full-stack internal tool for a Venture Capital firm. It has two surfaces:
+A full-stack internal tool for Nana Dwumfuoh's Healthworx Capital. It has two surfaces:
 
-1. **Founder-facing submission form** (`/`) — a clean, professional multi-section form where founders submit their pitch decks. No authentication required to submit.
+1. **Founder-facing website** (`/`) — a full-page marketing + submission site with a dark hero, animated particle canvas, thesis section, and a multi-section pitch form. No authentication required to submit.
 2. **VC Dashboard** (`/dashboard`) — an internal review tool where the VC team can browse, filter, update status, add notes, and delete submissions.
 
 ---
@@ -12,32 +12,49 @@ A full-stack internal tool for a Venture Capital firm. It has two surfaces:
 ## Changes Implemented
 
 ### Models
-- `src/shared/models/pitch-submission.ts` — TypeScript interfaces (`PitchSubmission`, `PitchSubmissionCreate`, `PitchSubmissionUpdate`) and all dropdown option constants (`ARR_OPTIONS`, `STAGE_OPTIONS`, `INDUSTRY_OPTIONS`, `MARKET_OPTIONS`, `TOTAL_RAISED_OPTIONS`, `TEAM_SIZE_OPTIONS`, `HOW_HEARD_OPTIONS`, `STATUS_OPTIONS`, `STATUS_LABELS`, `STATUS_COLORS`).
+- `src/shared/models/pitch-submission.ts` — TypeScript interfaces and all dropdown option constants.
 
 ### API Routes
-- `src/app/api/submissions/route.ts` — `GET` (with optional `status`, `stage`, `industry`, `arr` query filters) and `POST` (create new submission). Maps snake_case DB columns to camelCase.
-- `src/app/api/submissions/[id]/route.ts` — `PATCH` (update status/notes, sets `reviewed_at` on status change) and `DELETE`.
+- `src/app/api/submissions/route.ts` — `GET` (with optional filters) and `POST` (create new submission).
+- `src/app/api/submissions/[id]/route.ts` — `PATCH` (update status/notes) and `DELETE`.
 
 ### Client Library
-- `src/client-lib/api-client.ts` — SWR hook `useSubmissions(filters?)`, `buildSubmissionsKey(filters)`, `createSubmission`, `updateSubmissionStatus` (optimistic), `deleteSubmission` (optimistic).
-- `src/components/SWRProvider.tsx` — Global SWR config with `revalidateOnFocus: false`, `dedupingInterval: 30000`, `keepPreviousData: true`.
+- `src/client-lib/api-client.ts` — SWR hook `useSubmissions(filters?)`, `createSubmission`, `updateSubmissionStatus` (optimistic), `deleteSubmission` (optimistic).
+- `src/components/SWRProvider.tsx` — Global SWR config.
 
-### Pages
-- `src/app/page.tsx` — Founder pitch submission form with 5 sections (Your Info, Your Company, The Pitch, Traction, Pitch Deck), inline validation, character counters, loading state on submit, and a success screen.
-- `src/app/dashboard/page.tsx` — VC dashboard with stat cards, filter bar (status/stage/industry/ARR + client-side search), submissions table with optimistic status changes and deletes, and a detail Sheet with notes auto-save.
-- `src/app/dashboard/loading.tsx` — Skeleton loading state mirroring the dashboard layout.
+### Pages & Layout
+- `src/app/layout.tsx` — Stripped to bare minimum (ThemeProvider + SWRProvider + Toaster). No sidebar/topbar chrome at root level.
+- `src/app/page.tsx` — Thin orchestrator that assembles the pitch website sections.
+- `src/app/dashboard/layout.tsx` — Dashboard-specific layout that adds the Topbar and `pt-12` padding.
+- `src/app/dashboard/page.tsx` — VC dashboard with stat cards, filters, table, and detail Sheet.
+- `src/app/dashboard/loading.tsx` — Skeleton loading state.
 
-### Config & Layout
-- `src/config/nav-links.ts` — Added Dashboard nav link with `LayoutDashboard` icon.
-- `src/app/layout.tsx` — Wrapped children with `<SWRProvider>`.
+### Pitch Website Components (`src/components/pitch/`)
+- `KineticWord.tsx` — Animated cycling word ("Healthcare." / "Founders." / "Solutions.") with fade-up transition.
+- `PitchNavbar.tsx` — Fixed transparent navbar that transitions to white with shadow when scrolled off the dark hero (IntersectionObserver on `#hero`).
+- `HeroSection.tsx` — Full-viewport dark espresso hero with particle canvas, radial spotlight, eyebrow badge, giant headline, and dual CTA buttons.
+- `AboutSection.tsx` — White section with "Our Focus" eyebrow, headline, body copy, and 3 principle cards with hover animations.
+- `PitchFormSection.tsx` — Full 5-section pitch submission form with validation, success state, and walnut-themed styling.
+- `PitchFooter.tsx` — Dark espresso footer matching the hero.
+
+### Canvas Animation
+- `src/components/WarmParticleCanvas.tsx` — Canvas-based rising particle system with warm amber/gold particles along grid columns. Uses `requestAnimationFrame`, `ResizeObserver`, and radial gradient glow per particle.
+
+### Styling
+- `globals.css` — Updated CSS variables: pure white `--background`, sienna `--primary` (`20 60% 35%`). Added `.hero-gradient`, `.grid-pattern-dark`, `.grid-pattern-light` utility classes.
+
+### Topbar
+- `src/components/Topbar.tsx` — Restyled: white background, walnut wordmark with amber pulse dot, user avatar dropdown (ThemeToggle removed for cleaner look).
 
 ---
 
 ## Architecture and Technical Decisions
 
-- **Database**: Uses the existing `pitch_submissions` Postgres table. All queries use parameterized statements to prevent SQL injection.
-- **camelCase mapping**: DB rows (snake_case) are mapped to camelCase TypeScript interfaces in the API route handlers, keeping the client code clean.
-- **SWR key strategy**: All submission list keys start with `/submissions`, enabling wildcard cache invalidation (`key.startsWith('/submissions')`) across all filter combinations. `buildSubmissionsKey` is the single source of truth for key construction.
-- **Optimistic updates**: Status changes and deletes update the UI instantly via SWR's `optimisticData` callback, with `rollbackOnError: true` for safety. Errors surface via sonner toasts.
-- **Notes auto-save**: Debounced 800ms PATCH call from the detail Sheet, with a "Saved ✓" indicator.
-- **No extra packages**: Everything built with existing shadcn components, SWR, axios, and lucide-react.
+- **Layout split**: Root layout has zero chrome. The dashboard route gets its own `layout.tsx` that injects the Topbar. The pitch page manages its own fixed navbar inline. This avoids the sidebar/topbar appearing on the public-facing pitch website.
+- **Component decomposition**: The pitch page is split into 5 focused components under `src/components/pitch/` to stay within file size limits and keep each concern isolated.
+- **Canvas animation**: Implemented with raw Canvas 2D API (no library) for minimal bundle impact. Particles rise along grid column center-lines, fade in/out based on vertical progress, with a radial gradient glow per particle.
+- **Navbar state**: Uses `IntersectionObserver` on `#hero` (threshold 0.15) to toggle between transparent/dark-text and white/shadow modes. Avoids scroll event polling.
+- **Color palette**: All warm walnut/espresso colors are applied via inline `style` props (not Tailwind classes) to ensure exact hex values are used without Tailwind purging or approximating them.
+- **Database**: Uses the existing `pitch_submissions` Postgres table. All queries use parameterized statements.
+- **SWR key strategy**: All submission list keys start with `/submissions`, enabling wildcard cache invalidation across all filter combinations.
+- **Optimistic updates**: Status changes and deletes update the UI instantly via SWR's `optimisticData` callback, with `rollbackOnError: true`.

@@ -1,9 +1,8 @@
 "use client";
 
-import { ExternalLink, HeartPulse } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { authClient, getAuthActiveOrganization, getAuthClient } from "@/client-lib/auth-client";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -28,25 +27,42 @@ export function Topbar() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 bg-card/90 backdrop-blur-sm border-b border-border/60 z-[10] h-12">
+    <header className="fixed top-0 left-0 right-0 z-50 h-12 bg-white border-b" style={{ borderColor: "rgba(139,69,19,0.1)" }}>
       <div className="mx-auto h-full px-6">
         <div className="flex justify-between items-center h-full">
-          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <div className="flex items-center justify-center w-6 h-6 rounded bg-primary">
-              <HeartPulse className="w-3.5 h-3.5 text-primary-foreground" />
-            </div>
-            <span className="text-sm font-semibold tracking-tight text-foreground">Healthworx</span>
+          {/* Wordmark */}
+          <Link href="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
+            <span className="relative flex h-2 w-2" aria-hidden="true">
+              <span
+                className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
+                style={{ background: "#D4A06A" }}
+              />
+              <span
+                className="relative inline-flex rounded-full h-2 w-2"
+                style={{ background: "#D4A06A" }}
+              />
+            </span>
+            <span
+              className="text-sm font-semibold tracking-[0.2em] uppercase"
+              style={{ color: "#1C0F07" }}
+            >
+              Healthworx
+            </span>
           </Link>
 
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
+          {/* Right side */}
+          <div className="flex items-center gap-3">
             {session && (
               <DropdownMenu>
                 <DropdownMenuTrigger className="outline-none">
                   <Avatar className="h-7 w-7">
                     <AvatarImage src={session.user.image ?? undefined} />
-                    <AvatarFallback className="text-xs bg-primary/10 text-primary font-semibold">
-                      {session.user.name?.[0]?.toUpperCase() ?? session.user.email?.[0]?.toUpperCase()}
+                    <AvatarFallback
+                      className="text-xs font-semibold"
+                      style={{ background: "rgba(92,45,18,0.1)", color: "#5C2D12" }}
+                    >
+                      {session.user.name?.[0]?.toUpperCase() ??
+                        session.user.email?.[0]?.toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
@@ -66,18 +82,29 @@ export function Topbar() {
                   </div>
                   <DropdownMenuItem
                     className="cursor-pointer"
-                    onClick={() => window.open(`${process.env.NEXT_PUBLIC_VYBE_BASE_URL}/organizations`, "_blank")}
+                    onClick={() =>
+                      window.open(
+                        `${process.env.NEXT_PUBLIC_VYBE_BASE_URL}/organizations`,
+                        "_blank",
+                      )
+                    }
                   >
                     Switch organization <ExternalLink className="w-4 h-4" />
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     className="cursor-pointer"
-                    onClick={() => window.open(`${process.env.NEXT_PUBLIC_VYBE_BASE_URL}/apps`, "_blank")}
+                    onClick={() =>
+                      window.open(`${process.env.NEXT_PUBLIC_VYBE_BASE_URL}/apps`, "_blank")
+                    }
                   >
                     Manage apps <ExternalLink className="w-4 h-4" />
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem disabled={true} className="cursor-pointer" onClick={handleSignOut}>
+                  <DropdownMenuItem
+                    disabled={true}
+                    className="cursor-pointer"
+                    onClick={handleSignOut}
+                  >
                     <span className="text-destructive font-semibold">Log out</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>

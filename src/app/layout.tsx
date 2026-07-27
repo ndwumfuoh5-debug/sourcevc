@@ -3,12 +3,9 @@ import "globals.css";
 import { type Metadata } from "next";
 import { Geist_Mono, Inter } from "next/font/google";
 import { lazy } from "react";
-import { Sidebar } from "@/components/Sidebar";
 import { SWRProvider } from "@/components/SWRProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
-import { NAV_LINKS } from "@/config/nav-links";
 
 const ElementSelector = lazy(() =>
   process.env.NODE_ENV === "development"
@@ -26,11 +23,11 @@ const geistMono = Geist_Mono({
   variable: "--font-mono",
 });
 
-const appName = process.env.NEXT_PUBLIC_APP_NAME || "Internal App";
+const appName = process.env.NEXT_PUBLIC_APP_NAME || "Healthworx Capital";
 
 export const metadata: Metadata = {
   title: appName,
-  description: `${appName} - Created with Vybe`,
+  description: "Backing the next generation of healthcare solutions.",
   icons: "https://vybe.build/vybe-icon.svg",
 };
 
@@ -42,18 +39,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       className={`${inter.variable} ${geistMono.variable} font-sans antialiased`}
     >
       <body className="min-h-screen">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <SWRProvider>
-            {NAV_LINKS.length >= 2 ? (
-              <SidebarProvider>
-                <Sidebar />
-                <SidebarInset>
-                  <main className="flex-1 p-4">{children}</main>
-                </SidebarInset>
-              </SidebarProvider>
-            ) : (
-              <main className="flex-1 p-4">{children}</main>
-            )}
+            {children}
           </SWRProvider>
           <Toaster richColors />
           <ElementSelector />

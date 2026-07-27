@@ -14,14 +14,15 @@ export default function DashboardLoading() {
     <div className="space-y-6 py-2">
       {/* Title */}
       <div className="space-y-2">
-        <Skeleton className="h-7 w-48" />
-        <Skeleton className="h-4 w-64" />
+        <Skeleton className="h-3 w-32" style={{ background: 'rgba(139,69,19,0.1)' }} />
+        <Skeleton className="h-8 w-52" style={{ background: 'rgba(28,15,7,0.08)' }} />
+        <Skeleton className="h-4 w-72" />
       </div>
 
       {/* Stat cards */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
         {Array.from({ length: 5 }).map((_, i) => (
-          <Card key={i}>
+          <Card key={i} className="border-border/70">
             <CardHeader className="pb-1 pt-4 px-4">
               <Skeleton className="h-3 w-16" />
             </CardHeader>

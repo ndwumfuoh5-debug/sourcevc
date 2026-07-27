@@ -4,98 +4,97 @@
 
 @layer base {
   :root {
-    /* Cream / warm off-white backgrounds */
-    --background: 36 30% 96%;
-    --foreground: 22 25% 12%;
+    /* Pure white base for light sections */
+    --background: 0 0% 100%;
+    --foreground: 20 25% 12%;
 
-    --card: 36 25% 98%;
-    --card-foreground: 22 25% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 20 25% 12%;
 
-    --popover: 36 25% 98%;
-    --popover-foreground: 22 25% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 25% 12%;
 
-    /* Deep Walnut as primary */
-    --primary: 22 35% 22%;
+    /* Sienna/walnut primary */
+    --primary: 20 60% 35%;
     --primary-foreground: 36 30% 96%;
 
-    --secondary: 36 20% 90%;
-    --secondary-foreground: 22 25% 20%;
+    --secondary: 36 20% 93%;
+    --secondary-foreground: 20 25% 20%;
 
-    --muted: 36 20% 91%;
-    --muted-foreground: 22 15% 42%;
+    --muted: 36 20% 94%;
+    --muted-foreground: 20 15% 45%;
 
-    --accent: 36 25% 88%;
-    --accent-foreground: 22 35% 22%;
+    --accent: 36 25% 90%;
+    --accent-foreground: 20 60% 35%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 36 18% 84%;
-    --input: 36 18% 84%;
-    --ring: 22 35% 22%;
+    --border: 36 18% 88%;
+    --input: 36 18% 88%;
+    --ring: 20 60% 35%;
 
     --radius: 0.625rem;
 
     /* Charts — warm palette */
-    --chart-1: 22 60% 38%;
+    --chart-1: 20 60% 38%;
     --chart-2: 36 55% 52%;
     --chart-3: 15 45% 30%;
     --chart-4: 43 65% 58%;
     --chart-5: 30 50% 45%;
 
-    --sidebar-background: 22 30% 18%;
+    --sidebar-background: 20 30% 14%;
     --sidebar-foreground: 36 30% 92%;
     --sidebar-primary: 36 55% 72%;
-    --sidebar-primary-foreground: 22 35% 12%;
-    --sidebar-accent: 22 25% 25%;
+    --sidebar-primary-foreground: 20 35% 12%;
+    --sidebar-accent: 20 25% 20%;
     --sidebar-accent-foreground: 36 30% 92%;
-    --sidebar-border: 22 25% 25%;
+    --sidebar-border: 20 25% 22%;
     --sidebar-ring: 36 55% 72%;
   }
 
   .dark {
-    /* Deep walnut dark mode */
-    --background: 22 30% 9%;
+    --background: 20 30% 9%;
     --foreground: 36 25% 92%;
 
-    --card: 22 28% 12%;
+    --card: 20 28% 12%;
     --card-foreground: 36 25% 92%;
 
-    --popover: 22 28% 12%;
+    --popover: 20 28% 12%;
     --popover-foreground: 36 25% 92%;
 
     --primary: 36 55% 72%;
-    --primary-foreground: 22 35% 12%;
+    --primary-foreground: 20 35% 12%;
 
-    --secondary: 22 25% 18%;
+    --secondary: 20 25% 18%;
     --secondary-foreground: 36 25% 88%;
 
-    --muted: 22 25% 18%;
+    --muted: 20 25% 18%;
     --muted-foreground: 36 18% 58%;
 
-    --accent: 22 25% 20%;
+    --accent: 20 25% 20%;
     --accent-foreground: 36 55% 72%;
 
     --destructive: 0 62% 40%;
     --destructive-foreground: 36 25% 92%;
 
-    --border: 22 22% 20%;
-    --input: 22 22% 20%;
+    --border: 20 22% 20%;
+    --input: 20 22% 20%;
     --ring: 36 55% 72%;
 
     --chart-1: 36 65% 58%;
-    --chart-2: 22 55% 48%;
+    --chart-2: 20 55% 48%;
     --chart-3: 43 60% 62%;
     --chart-4: 15 50% 45%;
     --chart-5: 30 55% 52%;
 
-    --sidebar-background: 22 30% 7%;
+    --sidebar-background: 20 30% 7%;
     --sidebar-foreground: 36 25% 88%;
     --sidebar-primary: 36 55% 68%;
-    --sidebar-primary-foreground: 22 35% 10%;
-    --sidebar-accent: 22 25% 14%;
+    --sidebar-primary-foreground: 20 35% 10%;
+    --sidebar-accent: 20 25% 14%;
     --sidebar-accent-foreground: 36 25% 88%;
-    --sidebar-border: 22 22% 16%;
+    --sidebar-border: 20 22% 16%;
     --sidebar-ring: 36 55% 68%;
   }
 }
@@ -108,6 +107,7 @@
   html {
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
   }
 
   body {
@@ -118,5 +118,23 @@
   h2,
   h3 {
     @apply text-balance;
+  }
+}
+
+@layer utilities {
+  .hero-gradient {
+    background: linear-gradient(160deg, #1c0f07 0%, #2e1a10 50%, #1a0e05 100%);
+  }
+
+  .grid-pattern-dark {
+    background-image: linear-gradient(rgba(210, 160, 100, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(210, 160, 100, 0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .grid-pattern-light {
+    background-image: linear-gradient(rgba(139, 69, 19, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(139, 69, 19, 0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
   }
 }
