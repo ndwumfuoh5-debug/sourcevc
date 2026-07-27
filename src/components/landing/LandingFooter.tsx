@@ -4,44 +4,39 @@ import { Linkedin, Mail } from "lucide-react";
 
 export function LandingFooter() {
   return (
-    <footer className="bg-black py-16 px-8 md:px-16 lg:px-24">
-      <div className="max-w-6xl mx-auto">
+    <footer className="bg-[#1a1f2e] py-14 px-6 md:px-10">
+      <div className="max-w-7xl mx-auto">
 
         {/* Top row */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8 border-b border-white/10 pb-12 mb-10">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 border-b border-white/10 pb-10 mb-8">
           {/* Left: wordmark */}
-          <p className="text-white font-black text-3xl tracking-[-0.03em] lowercase">
-            ndc · healthcare ventures
+          <p className="text-white font-semibold text-lg tracking-tight">
+            NDC · Healthcare Ventures
           </p>
 
-          {/* Right: links */}
-          <div className="flex items-center gap-8">
+          {/* Right: icon links */}
+          <div className="flex items-center gap-6">
             <a
               href="#"
-              className="flex items-center gap-2 text-white/40 hover:text-white text-sm transition-colors"
+              className="flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm"
             >
-              <Linkedin size={14} />
-              <span className="text-xs tracking-widest uppercase">LinkedIn</span>
+              <Linkedin size={15} />
+              <span>LinkedIn</span>
             </a>
             <a
               href="mailto:hello@example.com"
-              className="flex items-center gap-2 text-white/40 hover:text-white text-sm transition-colors"
+              className="flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm"
             >
-              <Mail size={14} />
-              <span className="text-xs tracking-widest uppercase">Email</span>
+              <Mail size={15} />
+              <span>Email</span>
             </a>
           </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <p className="text-white/20 text-xs tracking-widest uppercase">
-            © {new Date().getFullYear()} · All submissions are confidential
-          </p>
-          <p className="text-white/20 text-xs tracking-widest uppercase">
-            Built for founders changing healthcare
-          </p>
-        </div>
+        <p className="text-white/20 text-xs">
+          © {new Date().getFullYear()} · All submissions are confidential
+        </p>
       </div>
     </footer>
   );

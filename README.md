@@ -23,6 +23,15 @@ The design is intentionally premium and minimal: deep forest green accent on war
 - **Design system**: Updated `globals.css` CSS variables to deep forest green primary (`#14532D`), warm off-white background (`#FAFAF9`), near-black foreground (`#111827`).
 - **Topbar/Sidebar**: Simplified to return null — each page manages its own header.
 
+### Glassmorphism Redesign (July 2026)
+- **`globals.css`**: Updated `--background` CSS variable to soft blue-gray (`#edf2f8` ≈ `hsl(214, 43%, 95%)`). Removed old dot-grid/canvas styles. Updated all color tokens to match the new blue-gray palette.
+- **`LandingNavbar`**: Full-width sticky nav with `bg-white/50 backdrop-blur-xl` frosted glass effect. NDC initials as dark pill, centered nav links in slate-500, "Submit your deck" dark pill CTA on the right.
+- **`HeroSection`**: Full-screen section with soft radial gradient background (`#dce8f5 → #e8f0f8 → #f0f4f8`). Decorative white blob overlays for depth. Two-column layout: left has badge pill, giant `clamp(3rem,7vw,6rem)` headline, subtext, and two pill buttons; right has a frosted glass card (`bg-white/50 backdrop-blur-xl rounded-3xl`) with 3 stat items (Stage, Geography, Response).
+- **`AboutSection`**: White background section with pill label, bold heading, brief paragraph. Three `bg-[#f0f5fc] rounded-2xl` focus area cards in a 3-column grid, each with a ghost Lucide icon in the top-right corner. 4-column stat strip with `bg-[#f5f8fc] rounded-2xl` cells.
+- **`SubmitSection`**: `bg-[#edf2f8]` background, centered header with pill label, form wrapped in a large `bg-white/70 backdrop-blur-xl rounded-3xl` frosted glass card.
+- **`PitchForm`**: All logic/validation/submission unchanged. Restyled: inputs/selects/textareas use `rounded-xl border-slate-200 bg-white/80 focus:ring-slate-100`; submit button is `bg-[#1a1f2e] rounded-full`; success checkmark in a `bg-[#1a1f2e] rounded-full` circle; section dividers use `text-slate-400 border-slate-100`.
+- **`LandingFooter`**: Dark `bg-[#1a1f2e]` background, two-column layout with wordmark left and LinkedIn/Email icon links right in `text-white/50 hover:text-white`.
+
 ---
 
 ## Architecture and Technical Decisions

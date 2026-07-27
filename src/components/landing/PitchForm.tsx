@@ -74,9 +74,9 @@ const emptyForm: FormData = {
 
 function Label({ children, required }: { children: React.ReactNode; required?: boolean }) {
   return (
-    <label className="block text-[11px] tracking-[0.15em] uppercase font-medium text-black/50 mb-2">
+    <label className="block text-[11px] tracking-[0.15em] uppercase font-medium text-slate-400 mb-2">
       {children}
-      {required && <span className="text-black ml-1">*</span>}
+      {required && <span className="text-slate-700 ml-1">*</span>}
     </label>
   );
 }
@@ -86,8 +86,8 @@ function Input({ error, ...props }: React.InputHTMLAttributes<HTMLInputElement> 
     <div>
       <input
         {...props}
-        className={`w-full px-4 py-3 border text-sm text-black placeholder-black/25 bg-white focus:outline-none focus:border-black transition-colors ${
-          error ? "border-red-400" : "border-gray-200"
+        className={`w-full px-4 py-3 rounded-xl border text-sm text-slate-800 placeholder-slate-300 bg-white/80 focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-100 transition-colors ${
+          error ? "border-red-400" : "border-slate-200"
         }`}
       />
       {error && <p className="mt-1.5 text-xs text-red-500">{error}</p>}
@@ -100,8 +100,8 @@ function SelectField({ error, children, ...props }: React.SelectHTMLAttributes<H
     <div>
       <select
         {...props}
-        className={`w-full px-4 py-3 border text-sm text-black bg-white focus:outline-none focus:border-black transition-colors appearance-none cursor-pointer ${
-          error ? "border-red-400" : "border-gray-200"
+        className={`w-full px-4 py-3 rounded-xl border text-sm text-slate-800 bg-white/80 focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-100 transition-colors appearance-none cursor-pointer ${
+          error ? "border-red-400" : "border-slate-200"
         }`}
       >
         {children}
@@ -119,14 +119,14 @@ function Textarea({ error, maxLength, value, ...props }: React.TextareaHTMLAttri
         {...props}
         value={value}
         maxLength={maxLength}
-        className={`w-full px-4 py-3 border text-sm text-black placeholder-black/25 bg-white focus:outline-none focus:border-black transition-colors resize-none ${
-          error ? "border-red-400" : "border-gray-200"
+        className={`w-full px-4 py-3 rounded-xl border text-sm text-slate-800 placeholder-slate-300 bg-white/80 focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-100 transition-colors resize-none ${
+          error ? "border-red-400" : "border-slate-200"
         }`}
       />
       <div className="flex justify-between mt-1">
         {error ? <p className="text-xs text-red-500">{error}</p> : <span />}
         {maxLength && (
-          <p className={`text-xs ml-auto ${len >= maxLength ? "text-red-500" : "text-black/30"}`}>
+          <p className={`text-xs ml-auto ${len >= maxLength ? "text-red-500" : "text-slate-300"}`}>
             {len}/{maxLength}
           </p>
         )}
@@ -137,10 +137,10 @@ function Textarea({ error, maxLength, value, ...props }: React.TextareaHTMLAttri
 
 function SectionDivider({ number, label }: { number: string; label: string }) {
   return (
-    <div className="flex items-center gap-4 py-4 border-t border-gray-100">
-      <span className="text-[10px] tracking-widest text-black/25 font-medium">{number}</span>
-      <span className="text-[11px] tracking-[0.2em] uppercase font-medium text-black/50">{label}</span>
-      <div className="flex-1 h-px bg-gray-100" />
+    <div className="flex items-center gap-4 py-4 border-t border-slate-100">
+      <span className="text-[10px] tracking-widest text-slate-400 font-medium">{number}</span>
+      <span className="text-[11px] tracking-[0.2em] uppercase font-medium text-slate-400">{label}</span>
+      <div className="flex-1 h-px bg-slate-100" />
     </div>
   );
 }
@@ -148,21 +148,21 @@ function SectionDivider({ number, label }: { number: string; label: string }) {
 function SuccessState({ email, onReset }: { email: string; onReset: () => void }) {
   return (
     <div className="text-center py-16 px-4">
-      {/* Checkmark */}
-      <div className="w-12 h-12 border-2 border-black flex items-center justify-center mx-auto mb-8">
-        <Check size={20} className="text-black" />
+      {/* Checkmark circle */}
+      <div className="w-12 h-12 bg-[#1a1f2e] text-white rounded-full flex items-center justify-center mx-auto mb-8">
+        <Check size={20} />
       </div>
-      <h3 className="text-3xl font-black tracking-tight lowercase text-black mb-4">
-        pitch received.
+      <h3 className="text-3xl font-bold tracking-tight text-[#1a1f2e] mb-4">
+        Pitch received.
       </h3>
-      <p className="text-gray-500 max-w-sm mx-auto leading-relaxed text-pretty text-sm">
+      <p className="text-slate-500 max-w-sm mx-auto leading-relaxed text-pretty text-sm">
         Thank you for sharing your vision. Every submission is personally reviewed
         — expect a response within 2 weeks. Confirmation sent to{" "}
-        <span className="font-medium text-black">{email}</span>.
+        <span className="font-medium text-[#1a1f2e]">{email}</span>.
       </p>
       <button
         onClick={onReset}
-        className="mt-10 text-xs tracking-widest uppercase text-black/40 hover:text-black underline underline-offset-4 transition-colors"
+        className="mt-10 text-xs tracking-widest uppercase text-slate-400 hover:text-slate-700 underline underline-offset-4 transition-colors"
       >
         Submit another pitch
       </button>
@@ -282,7 +282,7 @@ export function PitchForm() {
           <Label required>One-line description</Label>
           <Input type="text" placeholder="We help hospitals reduce readmissions using AI." value={form.one_liner}
             onChange={(e) => set("one_liner", e.target.value)} error={errors.one_liner} maxLength={120} />
-          <p className={`text-xs mt-1 text-right ${form.one_liner.length > 110 ? "text-red-500" : "text-black/30"}`}>
+          <p className={`text-xs mt-1 text-right ${form.one_liner.length > 110 ? "text-red-500" : "text-slate-300"}`}>
             {form.one_liner.length}/120
           </p>
         </div>
@@ -330,7 +330,7 @@ export function PitchForm() {
           <Label required>Pitch Deck URL</Label>
           <Input type="url" placeholder="https://docsend.com/view/..." value={form.pitch_deck_url}
             onChange={(e) => set("pitch_deck_url", e.target.value)} error={errors.pitch_deck_url} />
-          <p className="mt-2 text-xs text-black/30">
+          <p className="mt-2 text-xs text-slate-400">
             DocSend, Google Drive, or Dropbox link · Private and confidential
           </p>
         </div>
@@ -351,13 +351,13 @@ export function PitchForm() {
         <label className="flex items-start gap-3 cursor-pointer group">
           <div className="relative mt-0.5 flex-shrink-0">
             <input type="checkbox" checked={form.consent} onChange={(e) => set("consent", e.target.checked)} className="sr-only" />
-            <div className={`w-5 h-5 border-2 flex items-center justify-center transition-colors ${
-              form.consent ? "bg-black border-black" : errors.consent ? "border-red-400" : "border-gray-300 group-hover:border-black"
+            <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
+              form.consent ? "bg-[#1a1f2e] border-[#1a1f2e]" : errors.consent ? "border-red-400" : "border-slate-300 group-hover:border-slate-500"
             }`}>
               {form.consent && <Check size={11} className="text-white" />}
             </div>
           </div>
-          <span className="text-sm text-gray-600 leading-relaxed">
+          <span className="text-sm text-slate-500 leading-relaxed">
             I consent to my information and materials being stored and reviewed for investment consideration purposes.
           </span>
         </label>
@@ -367,7 +367,7 @@ export function PitchForm() {
       <button
         type="submit"
         disabled={submitting || !form.consent}
-        className="w-full bg-black hover:bg-gray-900 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-semibold tracking-widest uppercase py-4 rounded-full transition-colors flex items-center justify-center gap-2"
+        className="bg-[#1a1f2e] hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-semibold tracking-widest uppercase rounded-full w-full py-4 transition-colors flex items-center justify-center gap-2"
       >
         {submitting ? (
           <><Loader2 size={14} className="animate-spin" /> Submitting…</>
