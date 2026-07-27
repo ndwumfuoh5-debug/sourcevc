@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown } from "lucide-react";
+import { useEffect, useRef } from "react";
 
 export function HeroSection() {
   const scrollTo = (id: string) => {
@@ -8,59 +8,82 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center bg-[#0D1117] overflow-hidden">
-      {/* Dot grid overlay */}
-      <div className="absolute inset-0 dot-grid pointer-events-none" />
+    <section className="relative min-h-screen bg-[#D6E4F0] overflow-hidden flex flex-col">
+      {/* Subtle texture overlay */}
+      <div
+        className="absolute inset-0 opacity-30 pointer-events-none"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 70% 40%, #b8d4e8 0%, transparent 60%), radial-gradient(circle at 20% 80%, #c9dceb 0%, transparent 50%)",
+        }}
+      />
 
-      {/* Radial glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-green-900/20 rounded-full blur-3xl" />
+      {/* Vertical rotated label — right side */}
+      <div className="absolute right-8 top-1/2 -translate-y-1/2 hidden lg:flex flex-col items-center gap-4">
+        <div className="w-px h-16 bg-black/30" />
+        <span
+          className="text-[10px] tracking-[0.3em] uppercase text-black/40 font-medium"
+          style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+        >
+          Healthcare Ventures
+        </span>
+        <div className="w-px h-16 bg-black/30" />
       </div>
 
-      <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
-        {/* Eyebrow */}
-        <div className="inline-flex items-center gap-2 bg-green-900/40 border border-green-800/50 rounded-full px-4 py-1.5 mb-8">
-          <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
-          <span className="text-xs font-semibold uppercase tracking-widest text-green-400">
-            Healthcare Ventures · Deal Sourcing
-          </span>
-        </div>
+      {/* Main content */}
+      <div className="flex-1 flex flex-col justify-center px-8 md:px-16 lg:px-24 pt-24 pb-16 max-w-6xl">
+        {/* Small label */}
+        <p className="text-xs tracking-[0.25em] uppercase text-black/50 mb-10 font-medium">
+          Early-stage investor · Health &amp; Health-Tech
+        </p>
 
-        {/* H1 */}
-        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight text-white mb-6">
-          Sourcing the next generation of{" "}
-          <span className="text-green-400">health innovation.</span>
+        {/* Giant headline */}
+        <h1 className="text-[clamp(3.5rem,10vw,8rem)] font-black leading-[0.92] tracking-[-0.03em] text-black mb-8 lowercase">
+          sourcing the
+          <br />
+          next wave of
+          <br />
+          <span className="text-black/40">health</span> innovation.
         </h1>
 
-        {/* Subline */}
-        <p className="text-gray-400 text-lg md:text-xl max-w-xl mx-auto leading-relaxed mb-10 text-pretty">
-          I&apos;m an early-stage investor focused on healthcare and health-tech.
-          I partner with founders building solutions in digital health, AI/ML in
-          healthcare, and payer-provider infrastructure. If you&apos;re building
-          something that matters, I want to hear from you.
+        {/* Decorative arrow line */}
+        <div className="flex items-center gap-4 mb-12">
+          <div className="h-px bg-black flex-1 max-w-[120px]" />
+          <svg width="24" height="14" viewBox="0 0 24 14" fill="none">
+            <path d="M0 7h22M16 1l6 6-6 6" stroke="black" strokeWidth="1.5" />
+          </svg>
+        </div>
+
+        {/* Bio text */}
+        <p className="text-gray-600 text-base md:text-lg leading-relaxed max-w-md mb-12 text-pretty">
+          I partner with founders building solutions in digital health, AI in
+          healthcare, and payer-provider infrastructure. Every deck is personally
+          reviewed.
         </p>
 
         {/* CTAs */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="flex items-center gap-6">
           <button
             onClick={() => scrollTo("submit")}
-            className="bg-[#14532D] hover:bg-[#166534] text-white font-semibold px-8 py-3.5 rounded-full transition-all duration-200 hover:shadow-lg hover:shadow-green-900/30 hover:scale-[1.02] text-base"
+            className="bg-black text-white text-xs font-semibold tracking-widest uppercase px-8 py-4 hover:bg-gray-800 transition-colors"
           >
-            Submit Your Deck →
+            Submit your deck
           </button>
           <button
             onClick={() => scrollTo("about")}
-            className="border border-white/20 hover:border-white/40 text-white/80 hover:text-white font-medium px-8 py-3.5 rounded-full transition-all duration-200 text-base"
+            className="text-sm text-black/60 hover:text-black underline underline-offset-4 transition-colors"
           >
-            Learn More ↓
+            Learn more ↓
           </button>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-gray-500">
-        <span className="text-xs tracking-widest uppercase">Scroll</span>
-        <ChevronDown size={18} className="animate-bounce" style={{ animationDuration: "1.5s" }} />
+      {/* Bottom scroll hint */}
+      <div className="flex items-center gap-3 px-8 md:px-16 lg:px-24 pb-10">
+        <div className="w-4 h-4 border border-black/30 rounded-full flex items-center justify-center">
+          <div className="w-1 h-1 bg-black/40 rounded-full" />
+        </div>
+        <span className="text-[10px] tracking-[0.2em] uppercase text-black/40">Scroll to explore</span>
       </div>
     </section>
   );
