@@ -23,11 +23,11 @@ const geistMono = Geist_Mono({
   variable: "--font-mono",
 });
 
-const appName = process.env.NEXT_PUBLIC_APP_NAME || "Healthworx Capital";
+const appName = process.env.NEXT_PUBLIC_APP_NAME || "Pitch Portal";
 
 export const metadata: Metadata = {
   title: appName,
-  description: "Backing the next generation of healthcare solutions.",
+  description: "Submit your pitch deck.",
   icons: "https://vybe.build/vybe-icon.svg",
 };
 

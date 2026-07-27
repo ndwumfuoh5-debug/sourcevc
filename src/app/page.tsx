@@ -1,6 +1,5 @@
 "use client";
 
-import { AboutSection } from "@/components/pitch/AboutSection";
 import { HeroSection } from "@/components/pitch/HeroSection";
 import { PitchFooter } from "@/components/pitch/PitchFooter";
 import { PitchFormSection } from "@/components/pitch/PitchFormSection";
@@ -12,13 +11,9 @@ function scrollTo(id: string) {
 
 export default function SubmitPitchPage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen" style={{ background: "#FDFAF7" }}>
       <PitchNavbar onApplyClick={() => scrollTo("apply")} />
-      <HeroSection
-        onApplyClick={() => scrollTo("apply")}
-        onLearnMoreClick={() => scrollTo("about")}
-      />
-      <AboutSection />
+      <HeroSection onApplyClick={() => scrollTo("apply")} />
       <PitchFormSection />
       <PitchFooter />
     </div>

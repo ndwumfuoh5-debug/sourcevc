@@ -160,15 +160,9 @@ function SuccessState({ onReset }: { onReset: () => void }) {
             <CheckCircle2 className="w-9 h-9" style={{ color: "#8B4513" }} />
           </div>
         </div>
-        <p
-          className="text-xs font-semibold tracking-[0.22em] uppercase mb-4"
-          style={{ color: "#8B4513" }}
-        >
-          Pitch Received
-        </p>
         <h2
           className="text-4xl font-extrabold mb-4"
-          style={{ letterSpacing: "-0.025em", color: "#1C0F07" }}
+          style={{ letterSpacing: "-0.03em", color: "#1C0F07" }}
         >
           Thank you for sharing your vision.
         </h2>
@@ -259,19 +253,13 @@ export function PitchFormSection() {
       <div className="max-w-2xl mx-auto px-6">
         {/* Section header */}
         <div className="mb-12">
-          <p
-            className="text-xs font-semibold tracking-[0.22em] uppercase mb-4"
-            style={{ color: "#8B4513" }}
-          >
-            Apply
-          </p>
           <h2
             className="text-4xl md:text-5xl font-extrabold mb-4"
-            style={{ letterSpacing: "-0.025em", color: "#1C0F07" }}
+            style={{ letterSpacing: "-0.03em", color: "#1C0F07" }}
           >
             Tell us your story.
           </h2>
-          <p className="text-lg leading-relaxed text-pretty" style={{ color: "#6b5c4e" }}>
+          <p className="text-lg leading-relaxed text-pretty" style={{ color: "rgba(92,45,18,0.55)" }}>
             Every submission is reviewed personally. We respond within 5 business days.
           </p>
         </div>

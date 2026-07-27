@@ -31,22 +31,17 @@ export function Topbar() {
       <div className="mx-auto h-full px-6">
         <div className="flex justify-between items-center h-full">
           {/* Wordmark */}
-          <Link href="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
-            <span className="relative flex h-2 w-2" aria-hidden="true">
-              <span
-                className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
-                style={{ background: "#D4A06A" }}
-              />
-              <span
-                className="relative inline-flex rounded-full h-2 w-2"
-                style={{ background: "#D4A06A" }}
-              />
-            </span>
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <span
-              className="text-sm font-semibold tracking-[0.2em] uppercase"
+              className="w-2 h-2 rounded-full"
+              style={{ background: "#D4A06A" }}
+              aria-hidden="true"
+            />
+            <span
+              className="text-sm font-semibold tracking-[0.18em] uppercase"
               style={{ color: "#1C0F07" }}
             >
-              Healthworx
+              Dashboard
             </span>
           </Link>
 

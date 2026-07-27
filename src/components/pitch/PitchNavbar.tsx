@@ -37,28 +37,23 @@ export function PitchNavbar({ onApplyClick }: PitchNavbarProps) {
       style={{
         background: onDark ? "transparent" : "rgba(255,255,255,0.97)",
         backdropFilter: onDark ? "none" : "blur(12px)",
-        borderBottom: onDark ? "none" : "1px solid rgba(139,69,19,0.1)",
-        boxShadow: !onDark && scrolled ? "0 1px 20px rgba(28,15,7,0.08)" : "none",
+        borderBottom: onDark ? "none" : "1px solid rgba(139,69,19,0.08)",
+        boxShadow: !onDark && scrolled ? "0 1px 20px rgba(28,15,7,0.06)" : "none",
       }}
     >
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        {/* Wordmark */}
-        <div className="flex items-center gap-2.5">
-          <span className="relative flex h-2 w-2" aria-hidden="true">
-            <span
-              className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
-              style={{ background: "#D4A06A" }}
-            />
-            <span
-              className="relative inline-flex rounded-full h-2 w-2"
-              style={{ background: "#D4A06A" }}
-            />
-          </span>
+        {/* Wordmark — just a minimal dot */}
+        <div className="flex items-center gap-2">
           <span
-            className="text-sm font-semibold tracking-[0.2em] uppercase"
-            style={{ color: onDark ? "#F5E6D3" : "#1C0F07" }}
+            className="w-2 h-2 rounded-full"
+            style={{ background: "#D4A06A" }}
+            aria-hidden="true"
+          />
+          <span
+            className="text-sm font-semibold tracking-[0.18em] uppercase"
+            style={{ color: onDark ? "rgba(245,230,211,0.7)" : "#1C0F07" }}
           >
-            Healthworx
+            VC Portal
           </span>
         </div>
 
