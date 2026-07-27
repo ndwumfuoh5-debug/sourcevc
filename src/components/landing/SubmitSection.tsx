@@ -11,7 +11,17 @@ export function SubmitSection() {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-16 border-b border-gray-300 pb-12">
           <div>
             <p className="text-[10px] tracking-[0.3em] uppercase text-black/40 mb-5">Apply</p>
-            <h2 className="text-[clamp(2.5rem,6vw,4.5rem)] font-black leading-[0.95] tracking-[-0.03em] lowercase text-black">
+            <h2
+              className="leading-[0.95] lowercase"
+              style={{
+                fontFamily: "'Georgia', 'Times New Roman', serif",
+                fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
+                fontWeight: 700,
+                letterSpacing: "-0.02em",
+                color: "rgba(255,252,245,0.0)",
+                WebkitTextStroke: "1.5px rgba(0,0,0,0.75)",
+              }}
+            >
               share your<br />vision.
             </h2>
           </div>
@@ -31,7 +41,7 @@ export function SubmitSection() {
         </div>
 
         {/* Form — clean white card */}
-        <div className="bg-white p-10 md:p-16">
+        <div className="bg-white p-10 md:p-16 rounded-3xl">
           <PitchForm />
         </div>
       </div>

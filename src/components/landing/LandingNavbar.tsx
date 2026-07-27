@@ -16,25 +16,25 @@ export function LandingNavbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50">
+    <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4">
       <div
-        className={`transition-all duration-300 ${
-          scrolled ? "bg-white border-b border-gray-200" : "bg-transparent"
+        className={`rounded-2xl transition-all duration-300 ${
+          scrolled
+            ? "bg-white/80 backdrop-blur-md shadow-sm border border-white/60"
+            : "bg-white/20 backdrop-blur-sm border border-white/30"
         }`}
       >
-        <div className="flex items-center h-16">
-          {/* Black logo block — split design */}
-          <div className="bg-black h-16 flex items-center px-8 shrink-0">
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="text-white font-bold text-sm tracking-widest uppercase"
-            >
-              NDC
-            </button>
-          </div>
+        <div className="flex items-center h-14 px-5">
+          {/* Logo pill */}
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="bg-black/85 text-white font-semibold text-xs tracking-widest uppercase px-5 py-2 rounded-full mr-8 hover:bg-black transition-colors"
+          >
+            NDC
+          </button>
 
           {/* Nav links */}
-          <div className="flex items-center gap-10 px-10 flex-1">
+          <div className="flex items-center gap-8 flex-1">
             {[
               { id: "about", label: "about" },
               { id: "focus", label: "focus" },
@@ -50,15 +50,13 @@ export function LandingNavbar() {
             ))}
           </div>
 
-          {/* CTA */}
-          <div className="px-8">
-            <button
-              onClick={() => scrollTo("submit")}
-              className="bg-black text-white text-xs font-semibold tracking-widest uppercase px-6 py-3 hover:bg-gray-800 transition-colors"
-            >
-              Submit deck
-            </button>
-          </div>
+          {/* CTA — rounded pill */}
+          <button
+            onClick={() => scrollTo("submit")}
+            className="bg-black text-white text-xs font-semibold tracking-widest uppercase px-6 py-2.5 rounded-full hover:bg-gray-800 transition-colors"
+          >
+            Submit deck
+          </button>
         </div>
       </div>
     </nav>

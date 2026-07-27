@@ -367,7 +367,7 @@ export function PitchForm() {
       <button
         type="submit"
         disabled={submitting || !form.consent}
-        className="w-full bg-black hover:bg-gray-900 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-semibold tracking-widest uppercase py-4 transition-colors flex items-center justify-center gap-2"
+        className="w-full bg-black hover:bg-gray-900 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-semibold tracking-widest uppercase py-4 rounded-full transition-colors flex items-center justify-center gap-2"
       >
         {submitting ? (
           <><Loader2 size={14} className="animate-spin" /> Submitting…</>

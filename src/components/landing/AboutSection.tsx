@@ -27,7 +27,17 @@ export function AboutSection() {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-20 border-b border-gray-100 pb-16">
           <div>
             <p className="text-[10px] tracking-[0.3em] uppercase text-black/40 mb-5">About</p>
-            <h2 className="text-[clamp(2.5rem,6vw,4.5rem)] font-black leading-[0.95] tracking-[-0.03em] lowercase text-black">
+            <h2
+              className="leading-[0.95] lowercase"
+              style={{
+                fontFamily: "'Georgia', 'Times New Roman', serif",
+                fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
+                fontWeight: 700,
+                letterSpacing: "-0.02em",
+                color: "rgba(255,252,245,0.0)",
+                WebkitTextStroke: "1.5px rgba(0,0,0,0.75)",
+              }}
+            >
               why submit<br />to me?
             </h2>
           </div>
@@ -53,7 +63,16 @@ export function AboutSection() {
                   {item.number}
                 </span>
                 <div className="flex items-center gap-4 flex-1">
-                  <h3 className="text-xl font-black tracking-tight text-black lowercase w-48 shrink-0">
+                  <h3
+                    className="lowercase w-48 shrink-0"
+                    style={{
+                      fontFamily: "'Georgia', serif",
+                      fontSize: "1.2rem",
+                      fontWeight: 700,
+                      color: "transparent",
+                      WebkitTextStroke: "1px rgba(0,0,0,0.7)",
+                    }}
+                  >
                     {item.title}
                   </h3>
                   <div className="hidden md:block h-px bg-gray-200 flex-1 max-w-24" />
@@ -69,15 +88,15 @@ export function AboutSection() {
         </div>
 
         {/* Stats strip */}
-        <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-px bg-gray-100 border border-gray-100">
+        <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
             { label: "Stage", value: "Pre-seed → A" },
             { label: "Geography", value: "US-focused" },
             { label: "Check size", value: "$25K–$250K" },
             { label: "Response", value: "2 weeks" },
           ].map((stat) => (
-            <div key={stat.label} className="bg-white p-8 text-center">
-              <p className="text-2xl font-black tracking-tight text-black mb-1">{stat.value}</p>
+            <div key={stat.label} className="bg-gray-50 rounded-2xl p-8 text-center border border-gray-100">
+              <p className="text-2xl font-black tracking-tight text-black mb-1" style={{ fontFamily: "'Georgia', serif" }}>{stat.value}</p>
               <p className="text-[10px] tracking-[0.2em] uppercase text-black/40">{stat.label}</p>
             </div>
           ))}
