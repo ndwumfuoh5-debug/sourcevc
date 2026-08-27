@@ -47,8 +47,6 @@ export function LandingNavbar() {
         {/* Center: nav links */}
         <div className="hidden md:flex items-center gap-8">
           {[
-            { id: "about", label: "about" },
-            { id: "focus", label: "focus areas" },
             { id: "submit", label: "submit" },
           ].map(({ id, label }) => (
             <button
