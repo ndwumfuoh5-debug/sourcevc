@@ -5,16 +5,17 @@ import { Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { createSubmission } from "@/client-lib/api-client";
 
+// ─── Constants ────────────────────────────────────────────────────────────────
+
 const SECTORS = [
   "Digital Health",
-  "AI / ML in Healthcare",
-  "Payer-Provider Tech",
-  "Biotech / Pharma",
-  "Medical Devices",
-  "Health & Wellness",
-  "Mental Health",
-  "Genomics & Diagnostics",
-  "Health Data & Infrastructure",
+  "Health AI",
+  "Care Delivery",
+  "Payer Tech",
+  "Benefits / Admin",
+  "RCM / Billing",
+  "Regulatory / Compliance Tech",
+  "Clinical Ops",
   "Other",
 ];
 
@@ -38,6 +39,22 @@ const AMOUNT_COMMITTED = [
   "Fully committed (looking for strategic)",
 ];
 
+const ARR_BUCKETS = ["Pre-revenue", "<$1M", "$1M–$5M", "$5M+"];
+
+const FDA_OPTIONS = ["Yes", "No", "Unsure"];
+
+const STRATEGIC_FIT_OPTIONS = [
+  "Reducing administrative / operational waste",
+  "Regulatory & compliance automation",
+  "Cost containment / affordability",
+  "Value-based care enablement",
+  "Fraud / waste / abuse detection",
+  "Member / patient experience",
+  "Other",
+];
+
+// ─── Form Types ───────────────────────────────────────────────────────────────
+
 interface FormData {
   founder_name: string;
   founder_email: string;
@@ -46,12 +63,15 @@ interface FormData {
   company_website: string;
   one_liner: string;
   sector: string;
+  arr_bucket: string;
+  fda_clearance: string;
   stage: string;
   round_size: string;
   amount_committed: string;
   pitch_deck_url: string;
   problem: string;
   why_now: string;
+  strategic_fit: string[];
   consent: boolean;
 }
 
@@ -63,14 +83,19 @@ const emptyForm: FormData = {
   company_website: "",
   one_liner: "",
   sector: "",
+  arr_bucket: "",
+  fda_clearance: "",
   stage: "",
   round_size: "",
   amount_committed: "",
   pitch_deck_url: "",
   problem: "",
   why_now: "",
+  strategic_fit: [],
   consent: false,
 };
+
+// ─── Sub-components ───────────────────────────────────────────────────────────
 
 function Label({ children, required }: { children: React.ReactNode; required?: boolean }) {
   return (
@@ -95,7 +120,11 @@ function Input({ error, ...props }: React.InputHTMLAttributes<HTMLInputElement> 
   );
 }
 
-function SelectField({ error, children, ...props }: React.SelectHTMLAttributes<HTMLSelectElement> & { error?: string }) {
+function SelectField({
+  error,
+  children,
+  ...props
+}: React.SelectHTMLAttributes<HTMLSelectElement> & { error?: string }) {
   return (
     <div>
       <select
@@ -111,7 +140,12 @@ function SelectField({ error, children, ...props }: React.SelectHTMLAttributes<H
   );
 }
 
-function Textarea({ error, maxLength, value, ...props }: React.TextareaHTMLAttributes<HTMLTextAreaElement> & { error?: string }) {
+function Textarea({
+  error,
+  maxLength,
+  value,
+  ...props
+}: React.TextareaHTMLAttributes<HTMLTextAreaElement> & { error?: string }) {
   const len = typeof value === "string" ? value.length : 0;
   return (
     <div>
@@ -145,19 +179,59 @@ function SectionDivider({ number, label }: { number: string; label: string }) {
   );
 }
 
+function MultiSelectChips({
+  options,
+  selected,
+  onChange,
+  error,
+}: {
+  options: string[];
+  selected: string[];
+  onChange: (val: string[]) => void;
+  error?: string;
+}) {
+  const toggle = (opt: string) => {
+    onChange(
+      selected.includes(opt) ? selected.filter((s) => s !== opt) : [...selected, opt],
+    );
+  };
+  return (
+    <div>
+      <div className="flex flex-wrap gap-2">
+        {options.map((opt) => {
+          const active = selected.includes(opt);
+          return (
+            <button
+              key={opt}
+              type="button"
+              onClick={() => toggle(opt)}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
+                active
+                  ? "bg-[#1a1f2e]/80 border-[#1a1f2e]/80 text-white backdrop-blur-sm"
+                  : "bg-white/40 border-white/60 text-slate-600 hover:bg-white/60 backdrop-blur-sm"
+              }`}
+            >
+              {active && <Check size={10} className="inline mr-1 mb-0.5" />}
+              {opt}
+            </button>
+          );
+        })}
+      </div>
+      {error && <p className="mt-1.5 text-xs text-red-500">{error}</p>}
+    </div>
+  );
+}
+
 function SuccessState({ email, onReset }: { email: string; onReset: () => void }) {
   return (
     <div className="text-center py-16 px-4">
-      {/* Checkmark circle */}
       <div className="w-12 h-12 bg-[#1a1f2e] text-white rounded-full flex items-center justify-center mx-auto mb-8">
         <Check size={20} />
       </div>
-      <h3 className="text-3xl font-bold tracking-tight text-[#1a1f2e] mb-4">
-        Pitch received.
-      </h3>
+      <h3 className="text-3xl font-bold tracking-tight text-[#1a1f2e] mb-4">Pitch received.</h3>
       <p className="text-slate-500 max-w-sm mx-auto leading-relaxed text-pretty text-sm">
-        Thank you for sharing your vision. Every submission is personally reviewed
-        — expect a response within 2 weeks. Confirmation sent to{" "}
+        Thank you for sharing your vision. Every submission is personally reviewed — expect a
+        response within 2 weeks. Confirmation sent to{" "}
         <span className="font-medium text-[#1a1f2e]">{email}</span>.
       </p>
       <button
@@ -170,6 +244,8 @@ function SuccessState({ email, onReset }: { email: string; onReset: () => void }
   );
 }
 
+// ─── Main Form ────────────────────────────────────────────────────────────────
+
 export function PitchForm() {
   const [form, setForm] = useState<FormData>(emptyForm);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
@@ -177,7 +253,7 @@ export function PitchForm() {
   const [submitted, setSubmitted] = useState(false);
   const [submittedEmail, setSubmittedEmail] = useState("");
 
-  const set = (field: keyof FormData, value: string | boolean) => {
+  const set = (field: keyof FormData, value: string | boolean | string[]) => {
     setForm((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) setErrors((prev) => ({ ...prev, [field]: undefined }));
   };
@@ -194,12 +270,15 @@ export function PitchForm() {
     if (!form.one_liner.trim()) e.one_liner = "Required";
     else if (form.one_liner.length > 120) e.one_liner = "120 characters max";
     if (!form.sector) e.sector = "Required";
+    if (!form.arr_bucket) e.arr_bucket = "Required";
+    if (!form.fda_clearance) e.fda_clearance = "Required";
     if (!form.stage) e.stage = "Required";
     if (!form.round_size) e.round_size = "Required";
     if (!form.pitch_deck_url.trim()) e.pitch_deck_url = "Required";
     if (!form.problem.trim()) e.problem = "Required";
     else if (form.problem.length < 50) e.problem = "At least 50 characters";
     if (!form.why_now.trim()) e.why_now = "Required";
+    if (form.strategic_fit.length === 0) e.strategic_fit = "Select at least one";
     if (!form.consent) e.consent = "Consent required to submit";
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -218,12 +297,15 @@ export function PitchForm() {
         company_website: form.company_website || null,
         one_liner: form.one_liner,
         sector: form.sector,
+        arr_bucket: form.arr_bucket,
+        fda_clearance: form.fda_clearance,
         stage: form.stage,
         round_size: form.round_size,
         amount_committed: form.amount_committed || null,
         pitch_deck_url: form.pitch_deck_url,
         problem: form.problem,
         why_now: form.why_now,
+        strategic_fit: form.strategic_fit,
         consent: form.consent,
       });
       setSubmittedEmail(form.founder_email);
@@ -239,7 +321,11 @@ export function PitchForm() {
     return (
       <SuccessState
         email={submittedEmail}
-        onReset={() => { setForm(emptyForm); setSubmitted(false); setSubmittedEmail(""); }}
+        onReset={() => {
+          setForm(emptyForm);
+          setSubmitted(false);
+          setSubmittedEmail("");
+        }}
       />
     );
   }
@@ -247,6 +333,7 @@ export function PitchForm() {
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-1">
 
+      {/* 01 — About You */}
       <SectionDivider number="01" label="About You" />
       <div className="space-y-4 pt-2 pb-4">
         <div>
@@ -266,7 +353,8 @@ export function PitchForm() {
         </div>
       </div>
 
-      <SectionDivider number="02" label="Your Company" />
+      {/* 02 — Company Profile */}
+      <SectionDivider number="02" label="Company Profile" />
       <div className="space-y-4 pt-2 pb-4">
         <div>
           <Label required>Company Name</Label>
@@ -280,24 +368,57 @@ export function PitchForm() {
         </div>
         <div>
           <Label required>One-line description</Label>
-          <Input type="text" placeholder="We help hospitals reduce readmissions using AI." value={form.one_liner}
-            onChange={(e) => set("one_liner", e.target.value)} error={errors.one_liner} maxLength={120} />
+          <Input type="text" placeholder="We help hospitals reduce readmissions using AI."
+            value={form.one_liner} onChange={(e) => set("one_liner", e.target.value)}
+            error={errors.one_liner} maxLength={120} />
           <p className={`text-xs mt-1 text-right ${form.one_liner.length > 110 ? "text-red-500" : "text-slate-300"}`}>
             {form.one_liner.length}/120
           </p>
         </div>
-      </div>
-
-      <SectionDivider number="03" label="The Deal" />
-      <div className="space-y-4 pt-2 pb-4">
         <div className="grid sm:grid-cols-2 gap-4">
           <div>
-            <Label required>Sector</Label>
+            <Label required>Sector / Category</Label>
             <SelectField value={form.sector} onChange={(e) => set("sector", e.target.value)} error={errors.sector}>
               <option value="">Select sector…</option>
               {SECTORS.map((s) => <option key={s} value={s}>{s}</option>)}
             </SelectField>
           </div>
+          <div>
+            <Label required>Current ARR</Label>
+            <SelectField value={form.arr_bucket} onChange={(e) => set("arr_bucket", e.target.value)} error={errors.arr_bucket}>
+              <option value="">Select ARR…</option>
+              {ARR_BUCKETS.map((s) => <option key={s} value={s}>{s}</option>)}
+            </SelectField>
+          </div>
+        </div>
+        <div>
+          <Label required>Does your product require FDA clearance/approval to operate or be sold?</Label>
+          <SelectField value={form.fda_clearance} onChange={(e) => set("fda_clearance", e.target.value)} error={errors.fda_clearance}>
+            <option value="">Select…</option>
+            {FDA_OPTIONS.map((s) => <option key={s} value={s}>{s}</option>)}
+          </SelectField>
+        </div>
+      </div>
+
+      {/* 03 — Strategic Fit */}
+      <SectionDivider number="03" label="Strategic Fit" />
+      <div className="space-y-4 pt-2 pb-4">
+        <div>
+          <Label required>Which of these does your product primarily help with?</Label>
+          <p className="text-xs text-slate-400 mb-3">Select all that apply</p>
+          <MultiSelectChips
+            options={STRATEGIC_FIT_OPTIONS}
+            selected={form.strategic_fit}
+            onChange={(val) => set("strategic_fit", val)}
+            error={errors.strategic_fit}
+          />
+        </div>
+      </div>
+
+      {/* 04 — The Deal */}
+      <SectionDivider number="04" label="The Deal" />
+      <div className="space-y-4 pt-2 pb-4">
+        <div className="grid sm:grid-cols-2 gap-4">
           <div>
             <Label required>Stage</Label>
             <SelectField value={form.stage} onChange={(e) => set("stage", e.target.value)} error={errors.stage}>
@@ -305,8 +426,6 @@ export function PitchForm() {
               {STAGES.map((s) => <option key={s} value={s}>{s}</option>)}
             </SelectField>
           </div>
-        </div>
-        <div className="grid sm:grid-cols-2 gap-4">
           <div>
             <Label required>Round Size Being Raised</Label>
             <SelectField value={form.round_size} onChange={(e) => set("round_size", e.target.value)} error={errors.round_size}>
@@ -314,17 +433,18 @@ export function PitchForm() {
               {ROUND_SIZES.map((s) => <option key={s} value={s}>{s}</option>)}
             </SelectField>
           </div>
-          <div>
-            <Label>Amount Committed So Far</Label>
-            <SelectField value={form.amount_committed} onChange={(e) => set("amount_committed", e.target.value)}>
-              <option value="">Select…</option>
-              {AMOUNT_COMMITTED.map((s) => <option key={s} value={s}>{s}</option>)}
-            </SelectField>
-          </div>
+        </div>
+        <div>
+          <Label>Amount Committed So Far</Label>
+          <SelectField value={form.amount_committed} onChange={(e) => set("amount_committed", e.target.value)}>
+            <option value="">Select…</option>
+            {AMOUNT_COMMITTED.map((s) => <option key={s} value={s}>{s}</option>)}
+          </SelectField>
         </div>
       </div>
 
-      <SectionDivider number="04" label="Your Pitch" />
+      {/* 05 — Your Pitch */}
+      <SectionDivider number="05" label="Your Pitch" />
       <div className="space-y-4 pt-2 pb-4">
         <div>
           <Label required>Pitch Deck URL</Label>
@@ -346,7 +466,8 @@ export function PitchForm() {
         </div>
       </div>
 
-      <SectionDivider number="05" label="Consent" />
+      {/* 06 — Consent */}
+      <SectionDivider number="06" label="Consent" />
       <div className="pt-3 pb-6">
         <label className="flex items-start gap-3 cursor-pointer group">
           <div className="relative mt-0.5 flex-shrink-0">
@@ -377,7 +498,7 @@ export function PitchForm() {
         {submitting ? (
           <><Loader2 size={14} className="animate-spin" /> Submitting…</>
         ) : (
-          "Submit your pitch →"
+          "Submit your deck →"
         )}
       </button>
     </form>

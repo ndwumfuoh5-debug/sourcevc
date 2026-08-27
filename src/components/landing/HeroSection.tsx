@@ -140,7 +140,7 @@ export function HeroSection() {
                     WebkitBackdropFilter: "blur(8px)",
                   }}
                 >
-                  Submit Your Deck →
+                  Submit your deck →
                 </button>
                 <button
                   onClick={() => scrollTo("about")}

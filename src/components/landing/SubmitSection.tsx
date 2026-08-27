@@ -64,7 +64,7 @@ export function SubmitSection() {
               borderColor: "rgba(255,255,255,0.6)",
             }}
           >
-            Apply
+            Submit your deck
           </div>
           <h2 className="text-4xl font-bold text-[#1a1f2e] leading-tight mb-4">
             Share your vision.

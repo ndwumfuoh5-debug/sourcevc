@@ -32,6 +32,12 @@ const STATUS_COLORS: Record<PitchSubmission["status"], string> = {
   passed: "bg-rose-50 text-rose-700",
 };
 
+const QUICK_SCAN_COLORS: Record<string, string> = {
+  "Core fit": "bg-emerald-50 text-emerald-700 border border-emerald-200",
+  "Possible fit": "bg-amber-50 text-amber-700 border border-amber-200",
+  "Outside current focus": "bg-rose-50 text-rose-700 border border-rose-200",
+};
+
 function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="py-3 border-b border-gray-50 last:border-0">
@@ -43,7 +49,7 @@ function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-xs font-semibold uppercase tracking-widest text-green-700 mb-3 mt-6 first:mt-0">
+    <p className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-3 mt-6 first:mt-0">
       {children}
     </p>
   );
@@ -93,9 +99,13 @@ export function SubmissionSheet({ submission, open, onClose }: Props) {
     minute: "2-digit",
   });
 
+  const quickScanClass = submission.quick_scan_tag
+    ? (QUICK_SCAN_COLORS[submission.quick_scan_tag] ?? "bg-gray-100 text-gray-600")
+    : "bg-gray-100 text-gray-600";
+
   return (
     <Sheet open={open} onOpenChange={(v) => !v && onClose()}>
-      <SheetContent className="w-full sm:max-w-[480px] overflow-y-auto p-0">
+      <SheetContent className="w-full sm:max-w-[520px] overflow-y-auto p-0">
         {/* Header */}
         <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-5 z-10">
           <SheetHeader className="space-y-0">
@@ -116,60 +126,74 @@ export function SubmissionSheet({ submission, open, onClose }: Props) {
                   </SelectTrigger>
                   <SelectContent>
                     {STATUS_OPTIONS.map((opt) => (
-                      <SelectItem key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </SelectItem>
+                      <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
             </div>
+
+            {/* Quick-scan tag */}
+            {submission.quick_scan_tag && (
+              <div className="mt-3">
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${quickScanClass}`}>
+                  {submission.quick_scan_tag}
+                </span>
+              </div>
+            )}
           </SheetHeader>
         </div>
 
         {/* Body */}
         <div className="px-6 py-5 space-y-1">
-          {/* Founder Info */}
+          {/* Founder */}
           <SectionTitle>Founder</SectionTitle>
           <InfoRow label="Name" value={submission.founder_name} />
           <InfoRow label="Email" value={
-            <a href={`mailto:${submission.founder_email}`} className="text-green-700 hover:underline">
+            <a href={`mailto:${submission.founder_email}`} className="text-blue-600 hover:underline">
               {submission.founder_email}
             </a>
           } />
           <InfoRow label="LinkedIn" value={
             submission.founder_linkedin ? (
-              <a
-                href={submission.founder_linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-green-700 hover:underline flex items-center gap-1"
-              >
+              <a href={submission.founder_linkedin} target="_blank" rel="noopener noreferrer"
+                className="text-blue-600 hover:underline flex items-center gap-1">
                 View profile <ExternalLink size={12} />
               </a>
             ) : null
           } />
 
-          {/* Company Info */}
+          {/* Company */}
           <SectionTitle>Company</SectionTitle>
-          <InfoRow label="Company" value={submission.company_name} />
           <InfoRow label="Website" value={
             submission.company_website ? (
-              <a
-                href={submission.company_website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-green-700 hover:underline flex items-center gap-1"
-              >
+              <a href={submission.company_website} target="_blank" rel="noopener noreferrer"
+                className="text-blue-600 hover:underline flex items-center gap-1">
                 {submission.company_website} <ExternalLink size={12} />
               </a>
             ) : null
           } />
           <InfoRow label="One-liner" value={submission.one_liner} />
-
-          {/* Deal Info */}
-          <SectionTitle>Deal</SectionTitle>
           <InfoRow label="Sector" value={submission.sector} />
+          <InfoRow label="Current ARR" value={submission.arr_bucket} />
+          <InfoRow label="FDA Clearance Required" value={submission.fda_clearance} />
+
+          {/* Strategic Fit */}
+          <SectionTitle>Strategic Fit</SectionTitle>
+          <InfoRow label="Primary focus areas" value={
+            submission.strategic_fit && submission.strategic_fit.length > 0 ? (
+              <div className="flex flex-wrap gap-1.5 mt-1">
+                {submission.strategic_fit.map((tag) => (
+                  <span key={tag} className="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-slate-100 text-slate-600">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            ) : null
+          } />
+
+          {/* Deal */}
+          <SectionTitle>Deal</SectionTitle>
           <InfoRow label="Stage" value={submission.stage} />
           <InfoRow label="Round Size" value={submission.round_size} />
           <InfoRow label="Amount Committed" value={submission.amount_committed} />
@@ -177,12 +201,8 @@ export function SubmissionSheet({ submission, open, onClose }: Props) {
           {/* Pitch */}
           <SectionTitle>Pitch</SectionTitle>
           <InfoRow label="Pitch Deck" value={
-            <a
-              href={submission.pitch_deck_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-green-700 hover:underline flex items-center gap-1"
-            >
+            <a href={submission.pitch_deck_url} target="_blank" rel="noopener noreferrer"
+              className="text-blue-600 hover:underline flex items-center gap-1">
               Open deck <ExternalLink size={12} />
             </a>
           } />
@@ -195,20 +215,25 @@ export function SubmissionSheet({ submission, open, onClose }: Props) {
 
           {/* Meta */}
           <SectionTitle>Meta</SectionTitle>
+          <InfoRow label="Quick-scan Tag" value={
+            submission.quick_scan_tag ? (
+              <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${quickScanClass}`}>
+                {submission.quick_scan_tag}
+              </span>
+            ) : null
+          } />
           <InfoRow label="Submitted" value={formattedDate} />
 
           {/* Notes */}
           <div className="mt-6">
-            <p className="text-xs font-semibold uppercase tracking-widest text-green-700 mb-2">
-              Notes
-            </p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-2">Notes</p>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               onBlur={handleNotesBlur}
               placeholder="Add private notes about this submission…"
               rows={4}
-              className="w-full px-3.5 py-2.5 rounded-lg border border-gray-200 text-sm text-gray-800 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-green-600/20 focus:border-green-600 resize-none transition-colors"
+              className="w-full px-3.5 py-2.5 rounded-lg border border-gray-200 text-sm text-gray-800 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-slate-300 focus:border-slate-400 resize-none transition-colors"
             />
             <p className="text-xs text-gray-400 mt-1">Auto-saves on blur</p>
           </div>

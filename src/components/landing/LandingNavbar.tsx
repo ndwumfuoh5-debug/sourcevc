@@ -19,9 +19,7 @@ export function LandingNavbar() {
     <nav
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
       style={{
-        background: scrolled
-          ? "rgba(255,255,255,0.2)"
-          : "rgba(255,255,255,0.15)",
+        background: scrolled ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.15)",
         backdropFilter: "blur(24px) saturate(180%)",
         WebkitBackdropFilter: "blur(24px) saturate(180%)",
         borderBottom: "1px solid rgba(255,255,255,0.4)",
@@ -43,21 +41,6 @@ export function LandingNavbar() {
         >
           NDC
         </button>
-
-        {/* Center: nav links */}
-        <div className="hidden md:flex items-center gap-8">
-          {[
-            { id: "submit", label: "submit" },
-          ].map(({ id, label }) => (
-            <button
-              key={id}
-              onClick={() => scrollTo(id)}
-              className="text-sm text-slate-600 hover:text-slate-900 transition-colors"
-            >
-              {label}
-            </button>
-          ))}
-        </div>
 
         {/* Right: CTA pill */}
         <button

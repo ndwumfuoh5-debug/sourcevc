@@ -21,6 +21,11 @@ export const metadata: Metadata = {
   description:
     "Submit your pitch to be considered for healthcare and health-tech investment.",
   icons: "https://vybe.build/vybe-icon.svg",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: { index: false, follow: false },
+  },
 };
 
 export default function RootLayout({

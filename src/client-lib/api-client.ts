@@ -9,15 +9,19 @@ export interface PitchSubmission {
   company_website: string | null;
   one_liner: string;
   sector: string;
+  arr_bucket: string | null;
+  fda_clearance: string | null;
   stage: string;
   round_size: string;
   amount_committed: string | null;
   pitch_deck_url: string;
   problem: string;
   why_now: string;
+  strategic_fit: string[] | null;
   consent: boolean;
   status: 'pending' | 'reviewing' | 'passed' | 'meeting_scheduled';
   notes: string;
+  quick_scan_tag: string | null;
   submitted_at: string;
 }
 
@@ -36,7 +40,7 @@ export function useSubmission(id: string) {
 }
 
 export async function createSubmission(
-  data: Omit<PitchSubmission, 'id' | 'status' | 'notes' | 'submitted_at'>,
+  data: Omit<PitchSubmission, 'id' | 'status' | 'notes' | 'submitted_at' | 'quick_scan_tag'>,
 ) {
   const res = await fetch('/api/submissions', {
     method: 'POST',
