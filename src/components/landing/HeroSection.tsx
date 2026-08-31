@@ -1,11 +1,9 @@
 "use client";
 
-import { Stethoscope, Globe, Clock } from "lucide-react";
+import { Stethoscope } from "lucide-react";
 
 const STAT_CARDS = [
-  { icon: Stethoscope, label: "Stage", value: "Pre-seed → Series A" },
-  { icon: Globe, label: "Geography", value: "US-focused" },
-  { icon: Clock, label: "Response", value: "Within 2 weeks" },
+  { icon: Stethoscope, label: "Stage", value: "Pre-seed → Series B+" },
 ];
 
 export function HeroSection() {
