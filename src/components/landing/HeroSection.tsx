@@ -1,5 +1,13 @@
 "use client";
 
+import { Stethoscope, Globe, Clock } from "lucide-react";
+
+const STAT_CARDS = [
+  { icon: Stethoscope, label: "Stage", value: "Pre-seed → Series A" },
+  { icon: Globe, label: "Geography", value: "US-focused" },
+  { icon: Clock, label: "Response", value: "Within 2 weeks" },
+];
+
 export function HeroSection() {
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -115,11 +123,16 @@ export function HeroSection() {
 
               {/* Headline */}
               <h1
-                className="font-bold text-[#1a1f2e] leading-tight tracking-tight mb-6"
+                className="font-bold text-[#1a1f2e] leading-tight tracking-tight mb-4"
                 style={{ fontSize: "clamp(3rem, 7vw, 6rem)" }}
               >
                 Sourcing the next generation of health innovation.
               </h1>
+
+              {/* Thesis line */}
+              <p className="text-slate-600 text-base font-medium mb-4">
+                Particularly interested in companies that reduce cost in the healthcare system.
+              </p>
 
               {/* Subtext */}
               <p className="text-slate-500 text-lg leading-relaxed max-w-prose mb-10 text-pretty">
@@ -140,19 +153,7 @@ export function HeroSection() {
                     WebkitBackdropFilter: "blur(8px)",
                   }}
                 >
-                  Submit your deck →
-                </button>
-                <button
-                  onClick={() => scrollTo("about")}
-                  className="text-slate-700 rounded-full px-7 py-3.5 text-sm font-medium hover:opacity-80 transition-opacity"
-                  style={{
-                    background: "rgba(255,255,255,0.4)",
-                    backdropFilter: "blur(8px)",
-                    WebkitBackdropFilter: "blur(8px)",
-                    border: "1px solid rgba(255,255,255,0.6)",
-                  }}
-                >
-                  Learn More
+                  Submit your deck
                 </button>
               </div>
             </div>
@@ -160,13 +161,9 @@ export function HeroSection() {
             {/* Right — 40%: stat cards */}
             <div className="lg:max-w-[38%] w-full">
               <div className="space-y-4">
-                {[
-                  { icon: "🏥", label: "Stage", value: "Pre-seed → Series A" },
-                  { icon: "🌍", label: "Geography", value: "US-focused" },
-                  { icon: "⏱", label: "Response", value: "Within 2 weeks" },
-                ].map((stat) => (
+                {STAT_CARDS.map(({ icon: Icon, label, value }) => (
                   <div
-                    key={stat.label}
+                    key={label}
                     className="flex items-center gap-5 p-4 rounded-2xl"
                     style={{
                       background: "rgba(255,255,255,0.35)",
@@ -177,20 +174,20 @@ export function HeroSection() {
                     }}
                   >
                     <div
-                      className="w-11 h-11 rounded-full flex items-center justify-center text-xl flex-shrink-0 shadow-sm"
+                      className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm"
                       style={{
                         background: "rgba(255,255,255,0.7)",
                         border: "1px solid rgba(255,255,255,0.9)",
                       }}
                     >
-                      {stat.icon}
+                      <Icon size={18} className="text-slate-500" strokeWidth={1.5} />
                     </div>
                     <div>
                       <p className="text-xs text-slate-400 uppercase tracking-widest mb-0.5">
-                        {stat.label}
+                        {label}
                       </p>
                       <p className="text-sm font-semibold text-[#1a1f2e]">
-                        {stat.value}
+                        {value}
                       </p>
                     </div>
                   </div>

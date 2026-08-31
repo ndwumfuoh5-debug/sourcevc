@@ -57,12 +57,7 @@ export function SubmitSection() {
         <div className="mb-12 text-center">
           <div
             className="inline-flex items-center text-slate-500 text-xs px-4 py-1.5 rounded-full border mb-5"
-            style={{
-              background: "rgba(255,255,255,0.4)",
-              backdropFilter: "blur(12px)",
-              WebkitBackdropFilter: "blur(12px)",
-              borderColor: "rgba(255,255,255,0.6)",
-            }}
+            style={{ background: "rgba(255,255,255,0.4)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", borderColor: "rgba(255,255,255,0.6)" }}
           >
             Submit your deck
           </div>
@@ -70,8 +65,7 @@ export function SubmitSection() {
             Share your vision.
           </h2>
           <p className="text-slate-500 text-base leading-relaxed max-w-sm mx-auto text-pretty">
-            Fill out the form below. Every submission is personally reviewed —
-            expect a response within two weeks.
+            Fill out the form below. Every submission is personally reviewed. Expect a response within two weeks.
           </p>
         </div>
 

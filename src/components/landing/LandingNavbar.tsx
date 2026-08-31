@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export function LandingNavbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -30,26 +31,26 @@ export function LandingNavbar() {
         {/* Left: initials pill */}
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          style={{
-            background: "rgba(255,255,255,0.3)",
-            backdropFilter: "blur(12px)",
-            WebkitBackdropFilter: "blur(12px)",
-            border: "1px solid rgba(255,255,255,0.5)",
-            color: "#1a1f2e",
-          }}
+          style={{ background: "rgba(255,255,255,0.3)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.5)", color: "#1a1f2e" }}
           className="text-xs font-semibold px-4 py-1.5 rounded-full hover:bg-white/50 transition-colors tracking-wide"
         >
           NDC
         </button>
 
+        {/* Center: nav links */}
+        <div className="flex items-center gap-6">
+          <Link
+            href="/about"
+            className="text-xs font-medium text-slate-600 hover:text-slate-900 transition-colors tracking-wide"
+          >
+            About
+          </Link>
+        </div>
+
         {/* Right: CTA pill */}
         <button
           onClick={() => scrollTo("submit")}
-          style={{
-            background: "rgba(26,31,46,0.85)",
-            backdropFilter: "blur(8px)",
-            WebkitBackdropFilter: "blur(8px)",
-          }}
+          style={{ background: "rgba(26,31,46,0.85)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)" }}
           className="text-white rounded-full px-5 py-2 text-xs font-semibold hover:opacity-90 transition-opacity"
         >
           Submit your deck

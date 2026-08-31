@@ -228,17 +228,17 @@ function SuccessState({ email, onReset }: { email: string; onReset: () => void }
       <div className="w-12 h-12 bg-[#1a1f2e] text-white rounded-full flex items-center justify-center mx-auto mb-8">
         <Check size={20} />
       </div>
-      <h3 className="text-3xl font-bold tracking-tight text-[#1a1f2e] mb-4">Pitch received.</h3>
+      <h3 className="text-3xl font-bold tracking-tight text-[#1a1f2e] mb-4">Submission received.</h3>
       <p className="text-slate-500 max-w-sm mx-auto leading-relaxed text-pretty text-sm">
-        Thank you for sharing your vision. Every submission is personally reviewed — expect a
-        response within 2 weeks. Confirmation sent to{" "}
+        Thanks for sharing. I review submissions on a rolling basis and will follow up if there&apos;s a fit.
+        A confirmation has been sent to{" "}
         <span className="font-medium text-[#1a1f2e]">{email}</span>.
       </p>
       <button
         onClick={onReset}
         className="mt-10 text-xs tracking-widest uppercase text-slate-400 hover:text-slate-700 underline underline-offset-4 transition-colors"
       >
-        Submit another pitch
+        Submit another deck
       </button>
     </div>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useCallback } from "react";
-import { Search, X, Download } from "lucide-react";
+import { Search, X, Download, Lock } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -24,6 +24,52 @@ import {
 } from "@/client-lib/api-client";
 import { SubmissionSheet } from "@/components/dashboard/SubmissionSheet";
 import { toast } from "sonner";
+
+// ─── Admin password gate ──────────────────────────────────────────────────────
+
+const ADMIN_PASSWORD = "*HlTw2605!";
+
+function PasswordGate({ onUnlock }: { onUnlock: () => void }) {
+  const [val, setVal] = useState("");
+  const [err, setErr] = useState(false);
+
+  const attempt = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (val === ADMIN_PASSWORD) {
+      sessionStorage.setItem("ndc_admin_auth", "1");
+      onUnlock();
+    } else {
+      setErr(true);
+      setVal("");
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center">
+      <form onSubmit={attempt} className="bg-white border border-gray-100 rounded-2xl p-10 w-full max-w-sm shadow-sm text-center space-y-6">
+        <div className="w-10 h-10 bg-[#1a1f2e] rounded-full flex items-center justify-center mx-auto">
+          <Lock size={16} className="text-white" />
+        </div>
+        <div>
+          <h2 className="text-base font-semibold text-gray-900 mb-1">Admin access</h2>
+          <p className="text-xs text-gray-400">Enter the admin password to continue.</p>
+        </div>
+        <input
+          type="password"
+          value={val}
+          onChange={(e) => { setVal(e.target.value); setErr(false); }}
+          placeholder="Password"
+          autoFocus
+          className={`w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-300 ${err ? "border-red-400" : "border-gray-200"}`}
+        />
+        {err && <p className="text-xs text-red-500 -mt-3">Incorrect password.</p>}
+        <button type="submit" className="w-full bg-[#1a1f2e] text-white text-xs font-semibold py-2.5 rounded-full hover:opacity-90 transition-opacity">
+          Enter
+        </button>
+      </form>
+    </div>
+  );
+}
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -120,6 +166,16 @@ function QuickScanBadge({ tag }: { tag: string | null }) {
 // ─── Dashboard Page ───────────────────────────────────────────────────────────
 
 export default function DashboardPage() {
+  const [authed, setAuthed] = useState(() =>
+    typeof window !== "undefined" && sessionStorage.getItem("ndc_admin_auth") === "1"
+  );
+
+  if (!authed) return <PasswordGate onUnlock={() => setAuthed(true)} />;
+
+  return <DashboardInner />;
+}
+
+function DashboardInner() {
   const { data: submissions, isLoading, error } = useSubmissions();
 
   const [search, setSearch] = useState("");
@@ -346,7 +402,7 @@ export default function DashboardPage() {
                   <TableHead className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Founder</TableHead>
                   <TableHead className="text-xs font-semibold text-gray-500 uppercase tracking-wider hidden md:table-cell">Quick-Scan</TableHead>
                   <TableHead className="text-xs font-semibold text-gray-500 uppercase tracking-wider hidden lg:table-cell">ARR</TableHead>
-                  <TableHead className="text-xs font-semibold text-gray-500 uppercase tracking-wider hidden lg:table-cell">FDA</TableHead>
+                  <TableHead className="text-xs font-semibold text-gray-500 uppercase tracking-wider hidden md:table-cell">FDA</TableHead>
                   <TableHead className="text-xs font-semibold text-gray-500 uppercase tracking-wider hidden md:table-cell">Stage</TableHead>
                   <TableHead className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</TableHead>
                   <TableHead className="text-xs font-semibold text-gray-500 uppercase tracking-wider hidden md:table-cell">Date</TableHead>

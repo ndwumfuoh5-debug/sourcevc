@@ -1,6 +1,32 @@
 import { queryInternalDatabase } from '@/server-lib/internal-db-query';
 import { NextResponse } from 'next/server';
 
+// ─── Config ───────────────────────────────────────────────────────────────────
+
+// TODO: Set ADMIN_EMAIL env var to receive admin notifications
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? '';
+// TODO: Set RESEND_API_KEY env var to enable emails
+const RESEND_API_KEY = process.env.RESEND_API_KEY ?? '';
+const FROM_EMAIL = 'submissions@ndc.vc'; // update when domain is verified
+
+// ─── Email helpers ────────────────────────────────────────────────────────────
+
+async function sendEmail(to: string, subject: string, html: string) {
+  if (!RESEND_API_KEY) return; // silently skip until key is configured
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ from: FROM_EMAIL, to, subject, html }),
+    });
+  } catch (e) {
+    console.error('Email send failed:', e);
+  }
+}
+
 interface SubmissionBody {
   founder_name?: string;
   founder_email?: string;
@@ -107,7 +133,31 @@ export async function POST(request: Request) {
       ],
     );
 
-    return NextResponse.json(result[0], { status: 201 });
+    const row = result[0] as { id: string; company_name: string; founder_email: string };
+
+    // ── Founder acknowledgment (fire-and-forget) ──────────────────────────────
+    void sendEmail(
+      row.founder_email,
+      'We received your submission',
+      `<p>Hi ${body.founder_name ?? ''},</p>
+       <p>Thanks for sharing. I review submissions on a rolling basis and will follow up if there's a fit.</p>
+       <p style="color:#888;font-size:12px;">This is an automated confirmation. Please do not reply to this email.</p>`,
+    );
+
+    // ── Admin notification (fire-and-forget) ─────────────────────────────────
+    if (ADMIN_EMAIL) {
+      void sendEmail(
+        ADMIN_EMAIL,
+        `New submission: ${row.company_name} — ${quickScanTag}`,
+        `<p><strong>Company:</strong> ${body.company_name}</p>
+         <p><strong>Founder:</strong> ${body.founder_name} (${body.founder_email})</p>
+         <p><strong>ARR:</strong> ${body.arr_bucket}</p>
+         <p><strong>Quick-scan:</strong> ${quickScanTag}</p>
+         <p><a href="${process.env.NEXT_PUBLIC_BASE_URL ?? ''}/dashboard">View in dashboard</a></p>`,
+      );
+    }
+
+    return NextResponse.json(row, { status: 201 });
   } catch (e) {
     console.error(e);
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
