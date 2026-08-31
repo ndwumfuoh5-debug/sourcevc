@@ -134,14 +134,6 @@ export function HeroSection() {
                 Particularly interested in companies that reduce cost in the healthcare system.
               </p>
 
-              {/* Subtext */}
-              <p className="text-slate-500 text-lg leading-relaxed max-w-prose mb-10 text-pretty">
-                I personally review every submission — no filters, no automated
-                rejections. If you&apos;re building in digital health, AI in
-                healthcare, or payer-provider infrastructure, I want to hear your
-                story.
-              </p>
-
               {/* CTAs */}
               <div className="flex flex-wrap items-center gap-4">
                 <button
