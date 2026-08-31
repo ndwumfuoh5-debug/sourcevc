@@ -138,9 +138,8 @@ export function HeroSection() {
                   onClick={() => scrollTo("submit")}
                   className="text-white rounded-full px-7 py-3.5 text-sm font-semibold hover:opacity-90 transition-opacity"
                   style={{
-                    background: "rgba(26,31,46,0.85)",
-                    backdropFilter: "blur(8px)",
-                    WebkitBackdropFilter: "blur(8px)",
+                    background: "linear-gradient(135deg, #7c6fcd 0%, #5b8dee 100%)",
+                    boxShadow: "0 4px 16px rgba(100,110,220,0.35)",
                   }}
                 >
                   Submit your deck
