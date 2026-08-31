@@ -136,13 +136,11 @@ export function HeroSection() {
               <div className="flex flex-wrap items-center gap-4">
                 <button
                   onClick={() => scrollTo("submit")}
-                  className="text-slate-700 rounded-full px-7 py-3.5 text-sm font-semibold hover:bg-white/60 transition-all"
+                  className="text-white rounded-full px-7 py-3.5 text-sm font-semibold hover:opacity-90 transition-opacity"
                   style={{
-                    background: "rgba(255,255,255,0.45)",
-                    backdropFilter: "blur(12px)",
-                    WebkitBackdropFilter: "blur(12px)",
-                    border: "1px solid rgba(255,255,255,0.7)",
-                    boxShadow: "0 2px 12px rgba(100,120,180,0.12), inset 0 1px 0 rgba(255,255,255,0.8)",
+                    background: "rgba(26,31,46,0.85)",
+                    backdropFilter: "blur(8px)",
+                    WebkitBackdropFilter: "blur(8px)",
                   }}
                 >
                   Submit your deck
