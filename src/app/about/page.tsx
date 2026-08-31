@@ -39,7 +39,7 @@ export default function AboutPage() {
               color: "#1a1f2e",
             }}
           >
-            NDC
+            Home
           </Link>
           <Link
             href="/#submit"
