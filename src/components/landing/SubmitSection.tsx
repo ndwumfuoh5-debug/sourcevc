@@ -64,9 +64,7 @@ export function SubmitSection() {
           <h2 className="text-4xl font-bold text-[#1a1f2e] leading-tight mb-4">
             Share your vision.
           </h2>
-          <p className="text-slate-500 text-base leading-relaxed max-w-sm mx-auto text-pretty">
-            Fill out the form below. Every submission is personally reviewed. Expect a response within two weeks.
-          </p>
+
         </div>
 
         {/* Frosted glass form card */}

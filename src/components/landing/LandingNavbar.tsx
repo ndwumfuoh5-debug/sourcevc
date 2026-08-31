@@ -28,24 +28,17 @@ export function LandingNavbar() {
       }}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between h-14 px-6 md:px-10">
-        {/* Left: initials pill */}
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        {/* Left: About link pill */}
+        <Link
+          href="/about"
           style={{ background: "rgba(255,255,255,0.3)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.5)", color: "#1a1f2e" }}
           className="text-xs font-semibold px-4 py-1.5 rounded-full hover:bg-white/50 transition-colors tracking-wide"
         >
-          NDC
-        </button>
+          About
+        </Link>
 
         {/* Center: nav links */}
-        <div className="flex items-center gap-6">
-          <Link
-            href="/about"
-            className="text-xs font-medium text-slate-600 hover:text-slate-900 transition-colors tracking-wide"
-          >
-            About
-          </Link>
-        </div>
+        <div className="flex items-center gap-6" />
 
         {/* Right: CTA pill */}
         <button
