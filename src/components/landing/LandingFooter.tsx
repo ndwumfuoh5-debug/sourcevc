@@ -17,11 +17,6 @@ export function LandingFooter() {
 
         {/* Top row */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 border-b border-white/10 pb-10 mb-8">
-          {/* Left: wordmark */}
-          <p className="text-white font-semibold text-lg tracking-tight">
-            NDC · Healthcare Ventures
-          </p>
-
           {/* Right: icon links */}
           <div className="flex items-center gap-6">
             <a
