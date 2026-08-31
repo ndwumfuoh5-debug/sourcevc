@@ -29,7 +29,7 @@ export default function AboutPage() {
           borderBottom: "1px solid rgba(255,255,255,0.4)",
         }}
       >
-        <div className="max-w-4xl mx-auto flex items-center justify-between h-14 px-6">
+        <div className="max-w-7xl mx-auto flex items-center justify-between h-14 px-6 md:px-10">
           <Link
             href="/"
             className="text-xs font-semibold px-4 py-1.5 rounded-full tracking-wide transition-colors"

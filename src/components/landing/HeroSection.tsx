@@ -102,10 +102,10 @@ export function HeroSection() {
             borderRadius: "2.5rem",
           }}
         >
-          <div className="flex flex-col lg:flex-row lg:items-center gap-12 lg:gap-16">
+          <div className="flex flex-col gap-8">
 
-            {/* Left — 60% */}
-            <div className="flex-1 lg:max-w-[58%]">
+            {/* Left content — full width */}
+            <div className="max-w-3xl">
               {/* Badge */}
               <div
                 className="inline-flex items-center text-slate-500 text-xs px-4 py-1.5 rounded-full mb-8"
@@ -128,11 +128,11 @@ export function HeroSection() {
               </h1>
 
               {/* Thesis line */}
-              <p className="text-slate-600 text-base font-medium mb-4">
+              <p className="text-slate-600 text-base font-medium mb-8">
                 Particularly interested in companies that reduce cost in the healthcare system.
               </p>
 
-              {/* CTAs */}
+              {/* CTAs + Stage pill in one row */}
               <div className="flex flex-wrap items-center gap-4">
                 <button
                   onClick={() => scrollTo("submit")}
@@ -144,16 +144,12 @@ export function HeroSection() {
                 >
                   Submit your deck
                 </button>
-              </div>
-            </div>
 
-            {/* Right — 40%: stat cards */}
-            <div className="lg:max-w-[38%] w-full">
-              <div className="space-y-4">
+                {/* Stage pill */}
                 {STAT_CARDS.map(({ icon: Icon, label, value }) => (
                   <div
                     key={label}
-                    className="flex items-center gap-5 p-4 rounded-2xl"
+                    className="flex items-center gap-3 px-4 py-2.5 rounded-full"
                     style={{
                       background: "rgba(255,255,255,0.35)",
                       backdropFilter: "blur(20px)",
@@ -163,22 +159,16 @@ export function HeroSection() {
                     }}
                   >
                     <div
-                      className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm"
+                      className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
                       style={{
                         background: "rgba(255,255,255,0.7)",
                         border: "1px solid rgba(255,255,255,0.9)",
                       }}
                     >
-                      <Icon size={18} className="text-slate-500" strokeWidth={1.5} />
+                      <Icon size={14} className="text-slate-500" strokeWidth={1.5} />
                     </div>
-                    <div>
-                      <p className="text-xs text-slate-400 uppercase tracking-widest mb-0.5">
-                        {label}
-                      </p>
-                      <p className="text-sm font-semibold text-[#1a1f2e]">
-                        {value}
-                      </p>
-                    </div>
+                    <span className="text-xs text-slate-400 uppercase tracking-widest">{label}</span>
+                    <span className="text-sm font-semibold text-[#1a1f2e]">{value}</span>
                   </div>
                 ))}
               </div>
