@@ -7,7 +7,7 @@ import { NextResponse } from 'next/server';
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'ndsourced@gmail.com';
 // TODO: Set RESEND_API_KEY env var to enable emails
 const RESEND_API_KEY = process.env.RESEND_API_KEY ?? 're_FfLEE2Fx_J6SWA4yHEGLL3auBNupA8srK';
-const FROM_EMAIL = 'submissions@ndc.vc'; // update when domain is verified
+const FROM_EMAIL = 'onboarding@resend.dev'; // switch to submissions@ndc.vc once domain is verified
 
 // ─── Email helpers ────────────────────────────────────────────────────────────
 
