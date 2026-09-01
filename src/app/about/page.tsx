@@ -95,12 +95,16 @@ export default function AboutPage() {
                 About
               </p>
               <h1 className="text-2xl font-bold text-[#1a1f2e] tracking-tight mb-5">
-                Nana Dwumfuoh
+                Nana Dwumfuoh, MHS
               </h1>
 
-              <p className="text-slate-600 text-base leading-relaxed text-pretty max-w-prose">
-                I work at the intersection of health-tech investing and innovation. My background spans evaluating early-stage companies across digital health, health AI, and payer-provider infrastructure — with a particular focus on companies building toward a more cost-effective and accessible healthcare system. I review every submission personally.
-              </p>
+              <div className="text-slate-600 text-base leading-relaxed text-pretty max-w-prose space-y-4">
+                <p>I align healthcare innovation with business incentives to improve population health. The world is full of brilliant minds creating brilliant solutions to pressing healthcare problems, and I am on a mission to find them.</p>
+                <p>
+                  <span className="font-semibold text-[#1a1f2e]">A message to founders:</span> Thank you.{" "}
+                  Thank you for the time, energy, passion, and persistence you commit to building your businesses. Your courage to create makes the world a better place.
+                </p>
+              </div>
 
               {/* LinkedIn */}
               <a
