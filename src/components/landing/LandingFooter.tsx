@@ -20,14 +20,14 @@ export function LandingFooter() {
           {/* Right: icon links */}
           <div className="flex items-center gap-6">
             <a
-              href="#"
+              href="https://www.linkedin.com/in/nana-dwumfuoh-b00705119/"
               className="flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm"
             >
               <Linkedin size={15} />
               <span>LinkedIn</span>
             </a>
             <a
-              href="mailto:hello@example.com"
+              href="mailto:ndsourced@gmail.com"
               className="flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm"
             >
               <Mail size={15} />
