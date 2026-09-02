@@ -80,12 +80,13 @@ export default function AboutPage() {
                 }}
               >
                 {/* Profile.jpeg */}
-                <div className="w-full h-full flex items-center justify-center">
-                  <svg viewBox="0 0 80 80" fill="none" className="w-16 h-16 opacity-30">
-                    <circle cx="40" cy="28" r="16" fill="#1a1f2e" />
-                    <ellipse cx="40" cy="68" rx="26" ry="18" fill="#1a1f2e" />
-                  </svg>
-                </div>
+                         <div className="w-full h-full">
+            <img 
+              src="/Profile.jpeg" 
+              alt="Nana Dwumfuoh" 
+              className="w-full h-full object-cover" 
+            />
+          </div>
               </div>
             </div>
 
