@@ -79,7 +79,7 @@ export default function AboutPage() {
                   boxShadow: "0 4px 16px rgba(100,120,180,0.12)",
                 }}
               >
-                {/* Placeholder silhouette */}
+                {/* Profile.jpeg */}
                 <div className="w-full h-full flex items-center justify-center">
                   <svg viewBox="0 0 80 80" fill="none" className="w-16 h-16 opacity-30">
                     <circle cx="40" cy="28" r="16" fill="#1a1f2e" />
