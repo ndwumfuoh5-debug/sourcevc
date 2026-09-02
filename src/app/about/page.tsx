@@ -82,7 +82,7 @@ export default function AboutPage() {
                 {/* Profile.jpeg */}
                          <div className="w-full h-full">
             <img 
-              src="/Profile.jpeg" 
+              src="/profile.jpeg" 
               alt="Nana Dwumfuoh" 
               className="w-full h-full object-cover" 
             />
