@@ -19,7 +19,7 @@ export function LandingFooter() {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 border-b border-white/10 pb-10 mb-8">
           {/* Right: icon links */}
           <div className="flex items-center gap-6">
-            <
+            <a
               href="https://www.linkedin.com/in/nana-dwumfuoh-b00705119/" target="_blank" rel="noopener noreferrer"
               className="flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm"
             >
