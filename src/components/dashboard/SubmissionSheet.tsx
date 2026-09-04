@@ -206,12 +206,6 @@ export function SubmissionSheet({ submission, open, onClose }: Props) {
               Open deck <ExternalLink size={12} />
             </a>
           } />
-          <InfoRow label="Problem" value={
-            <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{submission.problem}</p>
-          } />
-          <InfoRow label="Why Now" value={
-            <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{submission.why_now}</p>
-          } />
 
           {/* Meta */}
           <SectionTitle>Meta</SectionTitle>
