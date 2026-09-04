@@ -105,7 +105,7 @@ export async function POST(request: Request) {
         (founder_name, founder_email, founder_linkedin, company_name, company_website,
          one_liner, sector, arr_bucket, fda_clearance, stage, round_size, amount_committed,
          pitch_deck_url, strategic_fit, consent, quick_scan_tag)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
        RETURNING id, company_name, founder_email`,
       [
         body.founder_name ?? '',
