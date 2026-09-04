@@ -15,8 +15,6 @@ export interface PitchSubmission {
   round_size: string;
   amount_committed: string | null;
   pitch_deck_url: string;
-  problem: string;
-  why_now: string;
   strategic_fit: string[] | null;
   consent: boolean;
   status: 'pending' | 'reviewing' | 'passed' | 'meeting_scheduled';
