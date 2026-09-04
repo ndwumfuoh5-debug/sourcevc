@@ -104,8 +104,8 @@ export async function POST(request: Request) {
       `INSERT INTO pitch_submissions
         (founder_name, founder_email, founder_linkedin, company_name, company_website,
          one_liner, sector, arr_bucket, fda_clearance, stage, round_size, amount_committed,
-         pitch_deck_url, problem, why_now, strategic_fit, consent, quick_scan_tag)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)
+         pitch_deck_url, strategic_fit, consent, quick_scan_tag)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,)
        RETURNING id, company_name, founder_email`,
       [
         body.founder_name ?? '',
@@ -165,7 +165,7 @@ export async function GET() {
     const result = await queryInternalDatabase(
       `SELECT id, founder_name, founder_email, founder_linkedin, company_name,
               company_website, one_liner, sector, arr_bucket, fda_clearance, stage,
-              round_size, amount_committed, pitch_deck_url, problem, why_now,
+              round_size, amount_committed, pitch_deck_url,
               strategic_fit, consent, status, notes, quick_scan_tag, submitted_at
        FROM pitch_submissions
        ORDER BY submitted_at DESC`,
