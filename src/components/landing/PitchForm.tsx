@@ -10,6 +10,7 @@ import { createSubmission } from "@/client-lib/api-client";
 const SECTORS = [
   "Digital Health",
   "Health AI",
+  "Diagnostics",
   "Care Delivery",
   "Payer Tech",
   "Benefits / Admin",
@@ -50,6 +51,10 @@ const STRATEGIC_FIT_OPTIONS = [
   "Value-based care enablement",
   "Fraud / waste / abuse detection",
   "Member / patient experience",
+  "Diagnostics & Screening",
+  "Prevention & Wellness",
+  "Social Determinants of Health (SDoH)",
+  "Direct Care & Clinical Delivery",
   "Other",
 ];
 
