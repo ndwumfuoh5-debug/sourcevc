@@ -152,9 +152,9 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json(row, { status: 201 });
-  } catch (e) {
+  } catch (e: any) {
     console.error(e);
-    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+    return NextResponse.json({ error: e?.message || 'Server error' }, { status: 500 });
   }
 }
 
@@ -172,8 +172,8 @@ export async function GET() {
       [],
     );
     return NextResponse.json(result);
-  } catch (e) {
+  } catch (e: any) {
     console.error(e);
-    return NextResponse.json({ e?.message || 'Server error' }, { status: 500 });
+    return NextResponse.json({ error: e?.message || 'Server error' }, { status: 500 });
   }
 }
