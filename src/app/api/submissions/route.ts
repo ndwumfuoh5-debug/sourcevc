@@ -41,8 +41,6 @@ interface SubmissionBody {
   round_size?: string;
   amount_committed?: string | null;
   pitch_deck_url?: string;
-  problem?: string;
-  why_now?: string;
   strategic_fit?: string[];
   consent?: boolean;
 }
