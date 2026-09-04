@@ -280,9 +280,6 @@ export function PitchForm() {
     if (!form.stage) e.stage = "Required";
     if (!form.round_size) e.round_size = "Required";
     if (!form.pitch_deck_url.trim()) e.pitch_deck_url = "Required";
-    if (!form.problem.trim()) e.problem = "Required";
-    else if (form.problem.length < 50) e.problem = "At least 50 characters";
-    if (!form.why_now.trim()) e.why_now = "Required";
     if (form.strategic_fit.length === 0) e.strategic_fit = "Select at least one";
     if (!form.consent) e.consent = "Consent required to submit";
     setErrors(e);
