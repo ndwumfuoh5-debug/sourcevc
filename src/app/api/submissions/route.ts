@@ -174,6 +174,6 @@ export async function GET() {
     return NextResponse.json(result);
   } catch (e) {
     console.error(e);
-    return NextResponse.json({ e.message || 'Server error' }, { status: 500 });
+    return NextResponse.json({ e?.message || 'Server error' }, { status: 500 });
   }
 }
