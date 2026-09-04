@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Sourcing | Healthcare Ventures",
   description:
-    "Submit your pitch to be considered for healthcare and health-tech investment.",
+    "Personal deal-sourcing and founder intake platform for health innovation.",
   icons: "/favicon.png",
   robots: {
     index: false,
