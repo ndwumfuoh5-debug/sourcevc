@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   title: "Sourcing | Healthcare Ventures",
   description:
     "Submit your pitch to be considered for healthcare and health-tech investment.",
-  icons: "https://vybe.build/vybe-icon.svg",
+  icons: "/favicon.png",
   robots: {
     index: false,
     follow: false,
