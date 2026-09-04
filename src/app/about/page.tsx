@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "About — NDC",
+  title: "About",
   description: "Background and contact for NDC.",
   robots: { index: false, follow: false },
 };
