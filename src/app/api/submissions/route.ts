@@ -6,15 +6,18 @@ import { NextResponse } from 'next/server';
 // TODO: Set ADMIN_EMAIL env var to receive admin notifications
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'ndsourced@gmail.com';
 // TODO: Set RESEND_API_KEY env var to enable emails
-const RESEND_API_KEY = process.env.RESEND_API_KEY ?? 're_FfLEE2Fx_J6SWA4yHEGLL3auBNupA8srK';
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const FROM_EMAIL = 'onboarding@resend.dev'; // switch to submissions@ndc.vc once domain is verified
 
-// ─── Email helpers ────────────────────────────────────────────────────────────
-
+// Email helpers
 async function sendEmail(to: string, subject: string, html: string) {
-  if (!RESEND_API_KEY) return; // silently skip until key is configured
+  if (!RESEND_API_KEY || RESEND_API_KEY.trim() === '') {
+    console.log('Skipping email notification: RESEND_API_KEY not configured.');
+    return;
+  }
+  
   try {
-    await fetch('https://api.resend.com/emails', {
+    const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${RESEND_API_KEY}`,
@@ -22,8 +25,12 @@ async function sendEmail(to: string, subject: string, html: string) {
       },
       body: JSON.stringify({ from: FROM_EMAIL, to, subject, html }),
     });
+
+    if (!res.ok) {
+      console.error('Resend email failed silently with status:', res.status);
+    }
   } catch (e) {
-    console.error('Email send failed:', e);
+    console.error('Email send error caught:', e);
   }
 }
 
