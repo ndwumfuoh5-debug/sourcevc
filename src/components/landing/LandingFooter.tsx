@@ -40,6 +40,9 @@ export function LandingFooter() {
         <p className="text-white/20 text-xs">
           © {new Date().getFullYear()} · All submissions are confidential
         </p>
+        <p className="text-white/20 text-xs mt-2 max-w-xl mx-auto">
+  NDSourced is an independent, personal deal-sourcing initiative. All views, reviews, and founder outreach conducted through this site are strictly personal and do not represent or bind any employer or affiliated organization.
+</p>
       </div>
     </footer>
   );
