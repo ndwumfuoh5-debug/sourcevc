@@ -459,16 +459,6 @@ export function PitchForm() {
             DocSend, Google Drive, or Dropbox link · Private and confidential
           </p>
         </div>
-        <div>
-          <Label required>What problem are you solving?</Label>
-          <Textarea placeholder="Describe the core problem your company addresses…" value={form.problem}
-            onChange={(e) => set("problem", e.target.value)} rows={4} maxLength={500} error={errors.problem} />
-        </div>
-        <div>
-          <Label required>Why now?</Label>
-          <Textarea placeholder="What makes this the right moment to build this company?" value={form.why_now}
-            onChange={(e) => set("why_now", e.target.value)} rows={3} maxLength={300} error={errors.why_now} />
-        </div>
       </div>
 
       {/* 06 — Consent */}
