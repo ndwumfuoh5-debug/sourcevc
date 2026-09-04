@@ -86,8 +86,6 @@ export async function POST(request: Request) {
       'stage',
       'round_size',
       'pitch_deck_url',
-      'problem',
-      'why_now',
     ];
 
     for (const field of required) {
