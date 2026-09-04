@@ -74,8 +74,6 @@ interface FormData {
   round_size: string;
   amount_committed: string;
   pitch_deck_url: string;
-  problem: string;
-  why_now: string;
   strategic_fit: string[];
   consent: boolean;
 }
@@ -94,8 +92,6 @@ const emptyForm: FormData = {
   round_size: "",
   amount_committed: "",
   pitch_deck_url: "",
-  problem: "",
-  why_now: "",
   strategic_fit: [],
   consent: false,
 };
@@ -305,8 +301,6 @@ export function PitchForm() {
         round_size: form.round_size,
         amount_committed: form.amount_committed || null,
         pitch_deck_url: form.pitch_deck_url,
-        problem: form.problem,
-        why_now: form.why_now,
         strategic_fit: form.strategic_fit,
         consent: form.consent,
       });
