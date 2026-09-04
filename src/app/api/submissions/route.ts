@@ -121,8 +121,6 @@ export async function POST(request: Request) {
         body.round_size ?? '',
         body.amount_committed ?? null,
         body.pitch_deck_url ?? '',
-        body.problem ?? '',
-        body.why_now ?? '',
         body.strategic_fit ?? [],
         body.consent ?? false,
         quickScanTag,
